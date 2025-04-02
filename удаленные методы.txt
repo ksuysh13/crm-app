@@ -1,0 +1,35 @@
+    // public Project create(Project project) {
+    //     String sql = "INSERT INTO Project (name, description, start_date, end_date) VALUES (?, ?, ?, ?) RETURNING id";
+    //     Integer id = jdbcTemplate.queryForObject(sql, Integer.class, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate());
+    //     project.setId(id);
+    //     return project;
+    // }
+
+
+    // public Optional<Project> findById(Integer id) {
+    //     String sql = "SELECT * FROM Project WHERE id = ?";
+    //     try {
+    //         Project project = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class), id);
+    //         return Optional.ofNullable(project);
+    //     } catch (EmptyResultDataAccessException e) {
+    //         return Optional.empty();
+    //     }
+    // }
+
+    // public void update(Project project) {
+    //     String sql = "UPDATE Project SET name = ?, description = ?, start_date = ?, end_date = ? WHERE id = ?";
+    //     jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getId());
+    // }
+
+    public void delete(Integer id) {
+        String sql = "DELETE FROM Project WHERE id = :id";
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+
+        namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    // public List<Project> findByDateRange(LocalDate startDate, LocalDate endDate) {
+    //     String sql = "SELECT * FROM Project WHERE start_date >= ? AND end_date <= ?";
+    //     return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Project.class), startDate, endDate);
+    // }

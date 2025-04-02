@@ -1,0 +1,42 @@
+DROP TABLE IF EXISTS Project, Task;
+DROP SEQUENCE IF EXISTS project_id_seq, task_id_seq;
+
+-- Создание последовательности для генерации первичных ключей таблицы Project
+CREATE SEQUENCE project_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+-- Создание последовательности для генерации первичных ключей таблицы Task
+CREATE SEQUENCE task_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+-- Создание таблицы Project
+CREATE TABLE Project (
+    id INT PRIMARY KEY DEFAULT nextval('project_id_seq'), -- Суррогатный первичный ключ
+    name VARCHAR(255) NOT NULL UNIQUE, -- Название проекта
+    description TEXT, -- Описание проекта
+    start_date DATE NOT NULL, -- Дата начала проекта
+    end_date DATE, -- Дата завершения проекта
+    CONSTRAINT chk_end_date_after_start_date CHECK (end_date > start_date) -- Проверка, что end_date > start_date
+);
+
+-- Создание таблицы Task
+CREATE TABLE Task (
+    id INT PRIMARY KEY DEFAULT nextval('task_id_seq'), -- Суррогатный первичный ключ
+    name VARCHAR(255) NOT NULL, -- Название задачи
+    description TEXT, -- Описание задачи
+    planned_end_date DATE NOT NULL, -- Планируемая дата завершения задачи
+    is_completed BOOLEAN DEFAULT FALSE, -- Флаг, указывающий, выполнена ли задача
+    project_id INT NOT NULL, -- Внешний ключ, ссылающийся на таблицу Project
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES Project(id)
+        ON DELETE CASCADE -- Удаление задач при удалении проекта
+);
