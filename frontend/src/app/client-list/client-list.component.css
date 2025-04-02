@@ -1,0 +1,68 @@
+/* client-list.component.css */
+.client-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    text-align: center;
+    color: #3f51b5;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+  
+  .client-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+  
+  .client-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .client-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .client-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #3f51b5;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .info-row {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+  }
+  
+  .info-row mat-icon {
+    margin-right: 8px;
+    color: #757575;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: #757575;
+  }
+  
+  .empty-state mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }

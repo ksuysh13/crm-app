@@ -2,28 +2,64 @@ import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../data/services/client.service';
 import { Client } from '../data/models/Client';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+// import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dialog.component';
+import { PhonePipe } from './pipes/phone.pipe'; 
 
 @Component({
   selector: 'app-client-list',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    PhonePipe
+  ],
   templateUrl: './client-list.component.html',
-  styleUrl: './client-list.component.css',
-
-  standalone: true, 
+  styleUrls: ['./client-list.component.css']
 })
-export class ClientListComponent {
+export class ClientListComponent implements OnInit {
   clients: Client[] = [];
 
-  constructor(private clientService: ClientService) { }
+  constructor(
+    private clientService: ClientService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
-    this.clientService.getAllClients().subscribe(
-      (data: Client[]) => {
-        this.clients = data;
-      },
-      (error) => {
-        console.error('Error fetching projects', error);
-      }
-    );
+    this.loadClients();
   }
+
+  loadClients(): void {
+    this.clientService.getAllClients().subscribe({
+      next: (data) => this.clients = data,
+      error: (err) => console.error('Error loading clients', err)
+    });
+  }
+
+  // editClient(client: Client): void {
+  //   const dialogRef = this.dialog.open(ClientEditDialogComponent, {
+  //     width: '500px',
+  //     data: { ...client }
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result) {
+  //       this.loadClients();
+  //     }
+  //   });
+  // }
+
+  // deleteClient(id: number): void {
+  //   if (confirm('Вы уверены, что хотите удалить этого клиента?')) {
+  //     this.clientService.deleteClient(id).subscribe({
+  //       next: () => this.loadClients(),
+  //       error: (err) => console.error('Error deleting client', err)
+  //     });
+  //   }
+  // }
 }
