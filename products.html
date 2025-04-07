@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары категории</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #7b79dc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .category-title {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .products-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .product-name {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            font-weight: bold;
+            color: #7b79dc;
+            font-size: 16px;
+        }
+        .product-stock {
+            color: #666;
+            font-size: 14px;
+        }
+        .product-manufacturer {
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+        
+        /* Кнопка управления */
+        .product-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .dots-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+        .actions-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 25px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1;
+            min-width: 120px;
+        }
+        .actions-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 15px;
+            text-align: left;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .actions-menu button:hover {
+            background-color: #f5f5f5;
+        }
+        .actions-menu button.edit {
+            color: #7b79dc;
+        }
+        .actions-menu button.delete {
+            color: #e74c3c;
+        }
+        
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #7b79dc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background-color: #6a68c5;
+        }
+        .add-product-btn {
+            background-color: #7b79dc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px;
+            display: block;
+        }
+        .add-product-btn:hover {
+            background-color: #6a68c5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">← Назад</button>
+        <h1 id="category-header">Категория товаров</h1>
+    </div>
+
+    <button class="add-product-btn" onclick="openAddProductModal()">+ Добавить товар</button>
+
+    <div class="products-container" id="products-container">
+        <!-- Товары будут добавляться динамически -->
+    </div>
+
+    <!-- Модальное окно добавления товара -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddProductModal()">&times;</span>
+            <h2>Добавить новый товар</h2>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label for="productName">Название товара:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Описание:</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">URL изображения:</label>
+                    <input type="text" id="productImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Цена:</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="productStock">Количество на складе:</label>
+                    <input type="number" id="productStock" required>
+                </div>
+                <div class="form-group">
+                    <label for="productManufacturer">Производитель:</label>
+                    <select id="productManufacturer">
+                        <option value="IKEA">IKEA</option>
+                        <option value="Ashley">Ashley</option>
+                        <option value="Herman Miller">Herman Miller</option>
+                        <option value="West Elm">West Elm</option>
+                        <option value="Другой">Другой</option>
+                    </select>
+                </div>
+                <button type="button" class="submit-btn" onclick="addNewProduct()">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования товара -->
+    <div id="editProductModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProductModal()">&times;</span>
+            <h2>Редактировать товар</h2>
+            <form id="editProductForm">
+                <input type="hidden" id="editProductId">
+                <div class="form-group">
+                    <label for="editProductName">Название товара:</label>
+                    <input type="text" id="editProductName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProductDescription">Описание:</label>
+                    <textarea id="editProductDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editProductImage">URL изображения:</label>
+                    <input type="text" id="editProductImage">
+                </div>
+                <div class="form-group">
+                    <label for="editProductPrice">Цена:</label>
+                    <input type="number" id="editProductPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProductStock">Количество на складе:</label>
+                    <input type="number" id="editProductStock" required>
+                </div>
+                <div class="form-group">
+                    <label for="editProductManufacturer">Производитель:</label>
+                    <select id="editProductManufacturer">
+                        <option value="IKEA">IKEA</option>
+                        <option value="Ashley">Ashley</option>
+                        <option value="Herman Miller">Herman Miller</option>
+                        <option value="West Elm">West Elm</option>
+                        <option value="Другой">Другой</option>
+                    </select>
+                </div>
+                <button type="button" class="submit-btn" onclick="saveEditedProduct()">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Получаем категорию из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        document.getElementById('category-header').textContent = decodeURIComponent(category);
+        
+        // Массив товаров (в реальном приложении нужно получать с сервера)
+        let products = [
+            {
+                id: 1,
+                name: "Диван угловой",
+                description: "Удобный угловой диван с механизмом трансформации",
+                image: "https://example.com/sofa1.jpg",
+                price: 34999,
+                stock: 5,
+                manufacturer: "IKEA"
+            },
+            {
+                id: 2,
+                name: "Диван прямой",
+                description: "Классический прямой диван с подлокотниками",
+                image: "https://example.com/sofa2.jpg",
+                price: 24999,
+                stock: 3,
+                manufacturer: "Ashley"
+            }
+        ];
+        
+        // Отображаем товары
+        function displayProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-actions">
+                        <button class="dots-btn" onclick="toggleActionsMenu(this)">⋮</button>
+                        <div class="actions-menu">
+                            <button class="edit" onclick="editProduct(${product.id})">Редактировать</button>
+                            <button class="delete" onclick="deleteProduct(${product.id})">Удалить</button>
+                        </div>
+                    </div>
+                    <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/280x180?text=Товар'">
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <p class="product-price">${product.price.toLocaleString()} ₽</p>
+                    <p class="product-stock">В наличии: ${product.stock} шт.</p>
+                    <p class="product-manufacturer">Производитель: ${product.manufacturer}</p>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+        
+        // Показываем/скрываем меню действий
+        function toggleActionsMenu(button) {
+            const menu = button.nextElementSibling;
+            const allMenus = document.querySelectorAll('.actions-menu');
+            
+            // Скрываем все другие меню
+            allMenus.forEach(m => {
+                if (m !== menu) m.style.display = 'none';
+            });
+            
+            // Показываем/скрываем текущее меню
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // Закрываем все меню при клике вне их
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('.dots-btn')) {
+                document.querySelectorAll('.actions-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+        
+        // Добавление нового товара
+        function addNewProduct() {
+            const name = document.getElementById('productName').value;
+            const description = document.getElementById('productDescription').value;
+            const image = document.getElementById('productImage').value || 'https://via.placeholder.com/280x180?text=Товар';
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const stock = parseInt(document.getElementById('productStock').value);
+            const manufacturer = document.getElementById('productManufacturer').value;
+            
+            if (!name || isNaN(price) || isNaN(stock)) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            const newProduct = {
+                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+                name,
+                description,
+                image,
+                price,
+                stock,
+                manufacturer
+            };
+            
+            products.push(newProduct);
+            displayProducts();
+            closeAddProductModal();
+            document.getElementById('addProductForm').reset();
+        }
+        
+        // Редактирование товара
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            document.getElementById('editProductId').value = product.id;
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductDescription').value = product.description;
+            document.getElementById('editProductImage').value = product.image;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('editProductStock').value = product.stock;
+            document.getElementById('editProductManufacturer').value = product.manufacturer;
+            
+            document.getElementById('editProductModal').style.display = 'block';
+        }
+        
+        // Сохранение изменений товара
+        function saveEditedProduct() {
+            const id = parseInt(document.getElementById('editProductId').value);
+            const name = document.getElementById('editProductName').value;
+            const description = document.getElementById('editProductDescription').value;
+            const image = document.getElementById('editProductImage').value;
+            const price = parseFloat(document.getElementById('editProductPrice').value);
+            const stock = parseInt(document.getElementById('editProductStock').value);
+            const manufacturer = document.getElementById('editProductManufacturer').value;
+            
+            if (!name || isNaN(price) || isNaN(stock)) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+            
+            const index = products.findIndex(p => p.id === id);
+            if (index !== -1) {
+                products[index] = {
+                    id,
+                    name,
+                    description,
+                    image,
+                    price,
+                    stock,
+                    manufacturer
+                };
+                
+                displayProducts();
+                closeEditProductModal();
+            }
+        }
+        
+        // Удаление товара
+        function deleteProduct(id) {
+            if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+                products = products.filter(p => p.id !== id);
+                displayProducts();
+            }
+        }
+        
+        // Управление модальными окнами
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'block';
+        }
+        
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'none';
+        }
+        
+        function closeEditProductModal() {
+            document.getElementById('editProductModal').style.display = 'none';
+        }
+        
+        // Закрытие модальных окон при клике вне их
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        }
+        
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProducts();
+        });
+    </script>
+</body>
+</html>

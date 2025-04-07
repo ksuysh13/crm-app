@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИС Магазин мебели</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffff;
+        }
+        .header {
+            background-color: #ffff;
+            color: rgb(26, 20, 20);
+            padding: 20px;
+            text-align: center;
+        }
+        .tabs {
+            overflow: hidden;
+            background-color: #333;
+        }
+        .tabs button {
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 16px;
+            background-color: inherit;
+            color: white;
+        }
+        .tabs button:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .tabs button.active {
+            background-color: #7b79dc;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .product-categories {
+            margin: 20px;
+            position: relative;
+        }
+        .add-category-btn {
+            background-color: #7b79dc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .add-category-btn:hover {
+            background-color: #6a68c5;
+        }
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .category-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .category-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .category-card h3 {
+            margin: 10px 0;
+            color: #333;
+        }
+        .category-card p {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #7b79dc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #6a68c5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Автоматизированная информационная система учета клиентов</h1>
+        <p>Магазин мебели "Уютный дом"</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="openTab(event, 'dashboard')">Главная</button>
+        <button class="tab-button" onclick="openTab(event, 'clients')">Клиенты</button>
+        <button class="tab-button" onclick="openTab(event, 'discounts')">Скидки</button>
+        <button class="tab-button" onclick="openTab(event, 'manufacturers')">Производители</button>
+        <button class="tab-button" onclick="openTab(event, 'orders')">Заказы</button>
+    </div>
+
+    <div id="dashboard" class="tab-content" style="display: block;">
+        <div class="product-categories">
+        <h2>Категории товаров</h2>
+        <button class="add-category-btn" onclick="openModal()">+ Добавить категорию</button>
+        
+        <div class="product-categories">
+            <div class="category-list">
+                <div class="category-card" onclick="window.location.href='products.html?category=Диваны'">
+                    <img src="https://admin.estetdveri.ru/upload/iblock/7ef/w73e0wusb2d4l28ur9pyvx38o0qg6i2a.webp" alt="Диваны" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Диваны'">
+                    <h3>Диваны</h3>
+                    <p>Мягкая мебель для гостиной</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=beds'">
+                    <img src="https://admin.estetdveri.ru/upload/iblock/a51/u20amcfdy0t9dvsituwfmhu2r859ikxv.webp" alt="Кровати" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Кровати'">
+                    <h3>Кровати</h3>
+                    <p>Спальные гарнитуры</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=tables'">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2m5FBuAtpiWJUDft9IDrwNfiVtLxkH2o6bA&s" alt="Столы" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Столы'">
+                    <h3>Столы</h3>
+                    <p>Обеденные и рабочие столы</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=chairs'">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvXxfVdK9pt__YaBm5R36yp6DtVKASFJ9kZg&s" alt="Стулья" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Стулья'">
+                    <h3>Стулья</h3>
+                    <p>Кухонные и офисные стулья</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=wardrobes'">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH6qfRKOKL8416qjGsnsXriuvGnLo265XcsQ&s" alt="Шкафы" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Шкафы'">
+                    <h3>Шкафы</h3>
+                    <p>Гардеробные системы</p>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=kitchen'">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOhbPN18nMxVcbRSSRn2iJLnFgD6YzoCCPPA&s" alt="Кухни" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=Кухни'">
+                    <h3>Кухни</h3>
+                    <p>Кухонные гарнитуры</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="clients" class="tab-content">
+        <h2>Управление клиентами</h2>
+        <p>Здесь будет список клиентов и инструменты для работы с ними.</p>
+    </div>
+
+    
+
+    <!-- Модальное окно для добавления категории -->
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Добавить новую категорию</h2>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="categoryName">Название категории:</label>
+                    <input type="text" id="categoryName" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Описание:</label>
+                    <textarea id="categoryDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="categoryImage">URL изображения:</label>
+                    <input type="text" id="categoryImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <button type="button" class="submit-btn" onclick="addNewCategory()">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- <div class="footer">
+        <p>© 2023 Магазин мебели "Уютный дом". Все права защищены.</p>
+    </div> -->
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            
+            // Скрыть все вкладки
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            // Убрать активный класс со всех кнопок
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].className = tabbuttons[i].className.replace(" active", "");
+            }
+            
+            // Показать текущую вкладку и сделать кнопку активной
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        // Функции для работы с модальным окном
+        function openModal() {
+            document.getElementById('addCategoryModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('addCategoryModal').style.display = 'none';
+        }
+        
+        // Добавление новой категории
+        function addNewCategory() {
+            const name = document.getElementById('categoryName').value;
+            const description = document.getElementById('categoryDescription').value;
+            const imageUrl = document.getElementById('categoryImage').value || 'https://via.placeholder.com/250x160?text=' + encodeURIComponent(name);
+            
+            if (!name) {
+                alert('Пожалуйста, введите название категории');
+                return;
+            }
+            
+            const categoryList = document.querySelector('.category-list');
+            
+            const newCategory = document.createElement('div');
+            newCategory.className = 'category-card';
+            newCategory.onclick = function() {
+                window.location.href = 'products.html?category=' + encodeURIComponent(name.toLowerCase());
+            };
+            
+            newCategory.innerHTML = `
+                <img src="${imageUrl}" alt="${name}" class="category-image" onerror="this.src='https://via.placeholder.com/250x160?text=${encodeURIComponent(name)}'">
+                <h3>${name}</h3>
+                <p>${description || 'Описание отсутствует'}</p>
+            `;
+            
+            categoryList.appendChild(newCategory);
+            
+            // Очищаем форму и закрываем модальное окно
+            document.getElementById('categoryForm').reset();
+            closeModal();
+        }
+        
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('addCategoryModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
