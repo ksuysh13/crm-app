@@ -1,0 +1,47 @@
+<!-- client-list.component.html -->
+<div class="client-container">
+    <h1 class="title">Список клиентов</h1>
+    
+    <div *ngIf="clients.length === 0" class="empty-state">
+      <mat-icon>group</mat-icon>
+      <p>Клиенты не найдены</p>
+    </div>
+  
+    <div class="client-cards">
+      <mat-card *ngFor="let client of clients" class="client-card">
+        <mat-card-header>
+          <div mat-card-avatar class="client-avatar">
+            {{ client.firstName.charAt(0) }}{{ client.lastName.charAt(0) }}
+          </div>
+          <mat-card-title>{{ client.lastName }} {{ client.firstName }}</mat-card-title>
+          <mat-card-subtitle>ID: {{ client.clientId }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="client-info">
+            <div class="info-row">
+              <mat-icon>email</mat-icon>
+              <span>{{ client.email }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>phone</mat-icon>
+              <span>{{ client.phone | phoneFormat }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>home</mat-icon>
+              <span>{{ client.address }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+        
+        <!-- <mat-card-actions>
+          <button mat-button color="primary" (click)="editClient(client)">
+            <mat-icon>edit</mat-icon> Редактировать
+          </button>
+          <button mat-button color="warn" (click)="deleteClient(client.clientId)">
+            <mat-icon>delete</mat-icon> Удалить
+          </button>
+        </mat-card-actions> -->
+      </mat-card>
+    </div>
+  </div>

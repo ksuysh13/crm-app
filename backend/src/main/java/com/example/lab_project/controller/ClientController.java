@@ -24,8 +24,10 @@ import com.example.lab_project.mapper.OrderMapper;
 import com.example.lab_project.model.Client;
 import com.example.lab_project.model.Order;
 import com.example.lab_project.service.ClientService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/clients")
 public class ClientController {
 
