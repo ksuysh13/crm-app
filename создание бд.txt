@@ -1,42 +1,187 @@
-DROP TABLE IF EXISTS Project, Task;
-DROP SEQUENCE IF EXISTS project_id_seq, task_id_seq;
+DROP TABLE IF EXISTS client, product_group, manufacturer, discount, product, ord, order_item, payment, review, product_status, shipping_address, price_history;
+DROP SEQUENCE IF EXISTS client_seq, product_group_seq, manufacturer_seq, product_seq, discount_seq, order_seq, order_item_seq, payment_seq, review_seq, product_status_seq, shipping_address_seq, price_history_seq;
 
--- Создание последовательности для генерации первичных ключей таблицы Project
-CREATE SEQUENCE project_id_seq
-    START WITH 1
+-- Создание последовательностей для всех id
+CREATE SEQUENCE client_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE product_group_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE manufacturer_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE product_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE discount_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE order_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE order_item_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE payment_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE review_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE product_status_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE shipping_address_seq
+START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+CREATE SEQUENCE price_history_seq
+START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
 
--- Создание последовательности для генерации первичных ключей таблицы Task
-CREATE SEQUENCE task_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
--- Создание таблицы Project
-CREATE TABLE Project (
-    id INT PRIMARY KEY DEFAULT nextval('project_id_seq'), -- Суррогатный первичный ключ
-    name VARCHAR(255) NOT NULL UNIQUE, -- Название проекта
-    description TEXT, -- Описание проекта
-    start_date DATE NOT NULL, -- Дата начала проекта
-    end_date DATE, -- Дата завершения проекта
-    CONSTRAINT chk_end_date_after_start_date CHECK (end_date > start_date) -- Проверка, что end_date > start_date
+-- Таблица клиентов
+CREATE TABLE client (
+    client_id INT PRIMARY KEY DEFAULT nextval('client_seq'),
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15) UNIQUE,
+    address VARCHAR(300)
 );
 
--- Создание таблицы Task
-CREATE TABLE Task (
-    id INT PRIMARY KEY DEFAULT nextval('task_id_seq'), -- Суррогатный первичный ключ
-    name VARCHAR(255) NOT NULL, -- Название задачи
-    description TEXT, -- Описание задачи
-    planned_end_date DATE NOT NULL, -- Планируемая дата завершения задачи
-    is_completed BOOLEAN DEFAULT FALSE, -- Флаг, указывающий, выполнена ли задача
-    project_id INT NOT NULL, -- Внешний ключ, ссылающийся на таблицу Project
-    CONSTRAINT fk_project
-        FOREIGN KEY (project_id)
-        REFERENCES Project(id)
-        ON DELETE CASCADE -- Удаление задач при удалении проекта
+-- Таблица групп продуктов
+CREATE TABLE product_group (
+    group_id INT PRIMARY KEY DEFAULT nextval('product_group_seq'),
+    group_name VARCHAR(100) UNIQUE,
+    description TEXT
+);
+
+-- Таблица производителей
+CREATE TABLE manufacturer (
+    manufacturer_id INT PRIMARY KEY DEFAULT nextval('manufacturer_seq'),
+    manufacturer_name VARCHAR(100) UNIQUE,
+    country VARCHAR(50)
+);
+
+-- Таблица скидок
+CREATE TABLE discount (
+    discount_id INT PRIMARY KEY DEFAULT nextval('discount_seq'),
+    discount_percentage DECIMAL(5, 2),
+    start_date DATE,
+    end_date DATE
+);
+
+-- Таблица продуктов
+CREATE TABLE product (
+    product_id INT PRIMARY KEY DEFAULT nextval('product_seq'),
+    product_name VARCHAR(100),
+    description TEXT,
+    price DECIMAL(10, 2),
+    stock_quantity INT,
+    group_id INT REFERENCES product_group(group_id),
+    manufacturer_id INT REFERENCES manufacturer(manufacturer_id),
+    UNIQUE (product_name, manufacturer_id)  -- Уникальность по имени и производителю
+);
+
+
+-- Таблица заказов
+CREATE TABLE ord (
+    order_id INT PRIMARY KEY DEFAULT nextval('order_seq'),
+    client_id INT REFERENCES client(client_id),
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10, 2),
+	is_completed BOOLEAN
+);
+
+-- Таблица элементов заказа
+CREATE TABLE order_item (
+    order_item_id INT PRIMARY KEY DEFAULT nextval('order_item_seq'),
+    order_id INT REFERENCES ord(order_id),
+    product_id INT REFERENCES product(product_id),
+	discount_id INT REFERENCES discount(discount_id),
+    quantity INT,
+    price DECIMAL(10, 2),
+    UNIQUE (order_id, product_id)  -- Уникальность по заказу и продукту
+);
+
+-- Таблица платежей
+CREATE TABLE payment (
+    payment_id INT PRIMARY KEY DEFAULT nextval('payment_seq'),
+    order_id INT REFERENCES ord(order_id),
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    amount DECIMAL(10, 2),
+    payment_method VARCHAR(50)
+);
+
+-- Таблица отзывов
+CREATE TABLE review (
+    review_id INT PRIMARY KEY DEFAULT nextval('review_seq'),
+    product_id INT REFERENCES product(product_id),
+    client_id INT REFERENCES client(client_id),
+    rating INT CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (product_id, client_id)  -- Уникальность по продукту и клиенту
+);
+
+-- Таблица статусов продуктов
+CREATE TABLE product_status (
+    status_id INT PRIMARY KEY DEFAULT nextval('product_status_seq'),
+    product_id INT REFERENCES product(product_id),
+    status VARCHAR(50),
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Таблица адресов доставки
+CREATE TABLE shipping_address (
+    address_id INT PRIMARY KEY DEFAULT nextval('shipping_address_seq'),
+    client_id INT REFERENCES client(client_id),
+    address TEXT,
+    city VARCHAR(50),
+    postal_code VARCHAR(10),
+    UNIQUE (client_id, address)  -- Уникальность по клиенту и адресу
+);
+
+-- Таблица истории цен
+CREATE TABLE price_history (
+    history_id INT PRIMARY KEY DEFAULT nextval('price_history_seq'),
+    product_id INT REFERENCES product(product_id),
+    price DECIMAL(10, 2),
+    change_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
