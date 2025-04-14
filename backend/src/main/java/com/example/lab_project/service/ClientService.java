@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.lab_project.model.Client;
 import com.example.lab_project.model.Order;
-import com.example.lab_project.model.Product;
 import com.example.lab_project.repository.ClientRepository;
 import com.example.lab_project.repository.OrderRepository;
 
@@ -41,6 +40,10 @@ public class ClientService {
 
     public List<Order> getUncompletedOrdersByClient(Long clientId) {
         return orderRepository.findUncompletedOrdersByClient(clientId);
+    }
+
+    public List<Order> getCompletedOrdersByClient(Long clientId) {
+        return orderRepository.findCompletedOrdersByClient(clientId);
     }
 
     // public Client updateClient(Long id, Client updatedClient) {

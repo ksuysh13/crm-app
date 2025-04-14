@@ -17,4 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query(value = "SELECT o.* FROM ord o WHERE o.client_id = :clientId AND o.is_completed = false", nativeQuery = true)
     List<Order> findUncompletedOrdersByClient(Long clientId);
+
+    @Query(value = "SELECT o.* FROM ord o WHERE o.client_id = :clientId AND o.is_completed = true", nativeQuery = true)
+    List<Order> findCompletedOrdersByClient(Long clientId);
 }

@@ -93,4 +93,16 @@ public class ClientController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
+
+    @GetMapping("/{clientId}/completed-orders")
+    public ResponseEntity<List<OrderDTO>> getCompletedOrders(@PathVariable Long clientId) {
+        if (clientService.findById(clientId).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Order> completedOrders = clientService.getCompletedOrdersByClient(clientId);
+        List<OrderDTO> dtos = completedOrders.stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
 }
