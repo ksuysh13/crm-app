@@ -8,10 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.lab_project.model.PriceHistory;
 import com.example.lab_project.model.Product;
 import com.example.lab_project.repository.ManufacturerRepository;
-import com.example.lab_project.repository.PriceHistoryRepository;
 import com.example.lab_project.repository.ProductGroupRepository;
 import com.example.lab_project.repository.ProductRepository;
 
@@ -25,9 +23,6 @@ public class ProductService {
 
     @Autowired
     private ManufacturerRepository manufacturerRepository;
-
-    @Autowired
-    private PriceHistoryRepository priceHistoryRepository;
 
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);

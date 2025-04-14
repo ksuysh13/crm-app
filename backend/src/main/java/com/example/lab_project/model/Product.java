@@ -37,9 +37,6 @@ public class Product {
     @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PriceHistory> priceHistory;
-
     public Product (Long productId) {
         this.productId = productId;
     }
