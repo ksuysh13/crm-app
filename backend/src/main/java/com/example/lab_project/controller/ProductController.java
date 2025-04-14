@@ -37,7 +37,7 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/{groupId}/{manufacturerId}")
+    @PostMapping("/groupId/{groupId}/manufacturerId/{manufacturerId}")
     public ResponseEntity<?> create(@PathVariable Long groupId, @PathVariable Long manufacturerId,
             @RequestBody ProductDTO productDTO) {
         try {
@@ -56,13 +56,16 @@ public class ProductController {
             Product product = productMapper.toEntity(productDTO);
             Product savedProduct = productService.save(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(productMapper.toDTO(savedProduct));
+        } catch (IllegalArgumentException e) {
+            // Ловим ошибки валидации и возвращаем 400 Bad Request
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error creating product: " + e.getMessage());
         }
     }
 
-    @PutMapping("/{groupId}/{manufacturerId}/{productId}")
+    @PutMapping("/groupId/{groupId}/manufacturerId/{manufacturerId}/productId/{productId}")
     public ResponseEntity<?> update(@PathVariable Long groupId, @PathVariable Long manufacturerId,
             @PathVariable Long productId, @RequestBody ProductDTO productDTO) {
         try {
@@ -88,6 +91,9 @@ public class ProductController {
             Product product = productMapper.toEntity(productDTO);
             Product updatedProduct = productService.save(product);
             return ResponseEntity.ok(productMapper.toDTO(updatedProduct));
+        } catch (IllegalArgumentException e) {
+            // Ловим ошибки валидации и возвращаем 400 Bad Request
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error updating product: " + e.getMessage());

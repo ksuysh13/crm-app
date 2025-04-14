@@ -1,5 +1,6 @@
 package com.example.lab_project.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,16 @@ public class ProductService {
     }
 
     public Product save(Product product) {
+        // Проверка на отрицательную цену
+        if (product.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Цена продукта не может быть отрицательной");
+        }
+        
+        // Проверка на отрицательное количество
+        if (product.getStockQuantity() < 0) {
+            throw new IllegalArgumentException("Количество товара не может быть отрицательным");
+        }
+        
         return productRepository.save(product);
     }
 

@@ -1,0 +1,73 @@
+# Анализ взаимосвязей сущностей и тестирование в Postman
+
+## Взаимосвязи сущностей
+
+1. **Order (Заказ)**:
+   - Связан с Client через `@ManyToOne` (многие заказы к одному клиенту)
+   - Связан с OrderItem через `@OneToMany` (один заказ содержит много позиций)
+   - Содержит автоматический пересчет общей суммы через `calculateTotalAmount()`
+
+2. **OrderItem (Позиция заказа)**:
+   - Связан с Order через `@ManyToOne` (многие позиции к одному заказу)
+   - Связан с Product через `@ManyToOne` (многие позиции могут ссылаться на один продукт)
+   - Связан с Discount через `@ManyToOne` (опциональная скидка на позицию)
+   - Содержит логику расчета цены со скидкой
+
+## Тестирование в Postman
+
+### Тесты для OrderController
+
+1. **Создание заказа**:
+   ```
+   POST /orders/{clientId}
+   Body: {
+     "orderDate": "2023-11-15",
+     "isCompleted": false
+   }
+   ```
+
+2. **Получение заказов клиента**:
+   ```
+   GET /orders/{clientId}
+   ```
+
+3. **Обновление заказа**:
+   ```
+   PUT /orders/{clientId}/{orderId}
+   Body: {
+     "orderDate": "2023-11-16",
+     "isCompleted": true
+   }
+   ```
+
+4. **Пересчет суммы заказа**:
+   ```
+   PUT /orders/{clientId}/{orderId}/recalculate
+   ```
+
+### Тесты для OrderItemController
+
+1. **Добавление позиции в заказ**:
+   ```
+   POST /order-items
+   Body: {
+     "orderId": 1,
+     "productId": 5,
+     "quantity": 2,
+     "discountId": 3 (опционально)
+   }
+   ```
+
+2. **Обновление позиции**:
+   ```
+   PUT /order-items/{orderItemId}
+   Body: {
+     "quantity": 3,
+     "discountId": null
+   }
+   ```
+
+3. **Получение позиций по заказу**:
+   ```
+   GET /order-items/order/{orderId}
+   ```
