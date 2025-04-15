@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 // import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dialog.component';
 import { PhonePipe } from './pipes/phone.pipe'; 
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-list',
@@ -27,7 +28,8 @@ export class ClientListComponent implements OnInit {
 
   constructor(
     private clientService: ClientService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +41,10 @@ export class ClientListComponent implements OnInit {
       next: (data) => this.clients = data,
       error: (err) => console.error('Error loading clients', err)
     });
+  }
+
+  onCreateClient(): void {
+    this.router.navigate(['/clients/new']); 
   }
 
   // editClient(client: Client): void {

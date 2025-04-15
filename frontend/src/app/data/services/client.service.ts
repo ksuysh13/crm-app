@@ -22,16 +22,16 @@ export class ClientService {
     return this.http.get<Client[]>(`${this.apiUrl}`)
   }
 
-  createClient(client: Client): Observable<Client> {
-    return this.http.post<Client>(this.apiUrl, client, this.httpOptions);
+  getClientById(id: number): Observable<Client> {
+    return this.http.get<Client>(`${this.apiUrl}/${id}`);
   }
 
-  updateClient(client: Client): Observable<Client> {
-    return this.http.put<Client>(
-      `${this.apiUrl}/${client.clientId}`,
-      client,
-      this.httpOptions
-    );
+  createClient(client: Client): Observable<Client> {
+    return this.http.post<Client>(this.apiUrl, client);
+  }
+
+  updateClient(id: number, client: Client): Observable<Client> {
+    return this.http.put<Client>(`${this.apiUrl}/${id}`, client);
   }
 
   deleteClient(id: number): Observable<void> {

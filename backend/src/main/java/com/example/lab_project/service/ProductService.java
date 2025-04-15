@@ -1,13 +1,11 @@
 package com.example.lab_project.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.lab_project.model.Product;
 import com.example.lab_project.repository.ManufacturerRepository;
 import com.example.lab_project.repository.ProductGroupRepository;

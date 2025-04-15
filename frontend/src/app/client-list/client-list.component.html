@@ -1,6 +1,22 @@
 <!-- client-list.component.html -->
+<div class="header">
+  <h1>Автоматизированная информационная система учета клиентов</h1>
+  <p>Магазин мебели "Уютный дом"</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-button active" onclick="openTab(event, 'dashboard')">Клиенты</button>
+  <button class="tab-button" onclick="openTab(event, 'categories')">Категории товаров</button>
+  <button class="tab-button" onclick="openTab(event, 'discounts')">Скидки</button>
+  <button class="tab-button" onclick="openTab(event, 'manufacturers')">Производители</button>
+  <button class="tab-button" onclick="openTab(event, 'orders')">Заказы</button>
+</div>
+
 <div class="client-container">
+
     <h1 class="title">Список клиентов</h1>
+
+    <button class="add-client-btn" (click)="onCreateClient()">+ Добавить клиента</button>
     
     <div *ngIf="clients.length === 0" class="empty-state">
       <mat-icon>group</mat-icon>
