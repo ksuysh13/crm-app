@@ -26,6 +26,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];
+  selectedClientId: number | null = null;
 
   constructor(
     private clientService: ClientService,
@@ -51,6 +52,20 @@ export class ClientListComponent implements OnInit {
   editClient(clientId: number | undefined): void {
     if (clientId !== undefined) {
       this.router.navigate(['/clients', clientId]);
+    }
+  }
+
+  deleteClient(clientId: number | undefined): void {
+    if (clientId !== undefined) {
+      if (confirm('Вы уверены, что хотите удалить этого клиента?')) {
+        this.clientService.deleteClient(clientId).subscribe({
+          next: () => {
+            this.loadClients();
+            this.selectedClientId = null;
+          },
+          error: (err) => console.error('Error deleting client', err)
+        });
+      }
     }
   }
 

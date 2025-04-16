@@ -151,3 +151,21 @@
 .edit-client-btn:hover {
   background-color: #6a68c5;
 }
+
+.delete-client-btn {
+  background-color: #ececf1;
+  color: rgb(1, 1, 1);
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 15px;
+  transition: background-color 0.3s;
+  width: 40%;
+}
+.delete-client-btn:hover {
+  background-color: #6a68c5;
+}
