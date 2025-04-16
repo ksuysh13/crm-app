@@ -1,1 +1,47 @@
 <p>edit-client works!</p>
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">Имя:</label>
+      <input id="firstName" type="text" formControlName="firstName">
+      <div class="error" *ngIf="projectForm.get('firstName')?.invalid && projectForm.get('firstName')?.touched">
+        Имя клиента обязательно.
+      </div>
+    </div>
+  
+    <div>
+        <label for="lastName">Фамилия:</label>
+        <input id="lastName" type="text" formControlName="lastName">
+        <div class="error" *ngIf="projectForm.get('lastName')?.invalid && projectForm.get('lastName')?.touched">
+          Фамилия клиента обязательно.
+        </div>
+    </div>
+
+    <div>
+        <label for="email">Email:</label>
+        <input id="email" type="text" formControlName="email">
+        <div class="error" *ngIf="projectForm.get('email')?.invalid && projectForm.get('email')?.touched">
+          email обязательно.
+        </div>
+    </div>
+
+    <div>
+        <label for="phone">Номер телефона:</label>
+        <input id="phone" type="text" formControlName="phone">
+        <div class="error" *ngIf="projectForm.get('phone')?.invalid && projectForm.get('phone')?.touched">
+          Номер телефона обязательно.
+        </div>
+    </div>
+
+    <div>
+        <label for="address">Адрес:</label>
+        <input id="address" type="text" formControlName="address">
+        <div class="error" *ngIf="projectForm.get('address')?.invalid && projectForm.get('address')?.touched">
+          Адрес обязательно.
+        </div>
+    </div>
+  
+    <button style="margin-bottom: 10px;" type="submit" [disabled]="projectForm.invalid">
+      {{ isEditMode ? 'Сохранить изменения' : 'Добавить клиента' }}
+    </button>
+    <button type="button" (click)="router.navigate(['/clients'])">Отмена</button>
+</form>
