@@ -3,11 +3,11 @@ form {
     height: 100vh; 
     margin: 0; 
     padding: 20px; 
-    background-color: rgb(134, 166, 105); 
+    background-color: #7b79dc;
     border: none; 
     border-radius: 0; 
     box-shadow: none; 
-    color: white; 
+    color: white;
     font-family: 'Arial', sans-serif; 
     box-sizing: border-box; 
     display: flex;
@@ -29,7 +29,7 @@ form {
     max-width: 500px; 
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid rgb(11, 92, 41);
+    border: 1px solid rgb(55, 53, 170);
     border-radius: 4px; 
     background-color: white; 
     color: black; 
@@ -39,8 +39,8 @@ form {
   
   input:focus, textarea:focus {
     outline: none;
-    border-color: rgb(11, 92, 41); 
-    box-shadow: 0 0 5px rgba(11, 92, 41, 0.5); 
+    border-color: rgb(107, 130, 220); 
+    box-shadow: 0 0 5px rgba(63, 69, 231, 0.5); 
   }
   
   button {
@@ -60,11 +60,11 @@ form {
   }
   
   button[type="submit"] {
-    background-color: rgb(10, 47, 31); 
+    background-color: rgb(57, 71, 160); 
   }
   
   button[type="submit"]:hover {
-    background-color: rgb(40, 100, 80); 
+    background-color: rgb(50, 68, 139); 
   }
   
   .error {
