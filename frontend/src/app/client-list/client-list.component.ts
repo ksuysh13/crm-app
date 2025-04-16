@@ -18,7 +18,8 @@ import { Router, RouterModule } from '@angular/router';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    PhonePipe
+    PhonePipe,
+    RouterModule
   ],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css']
@@ -45,6 +46,12 @@ export class ClientListComponent implements OnInit {
 
   onCreateClient(): void {
     this.router.navigate(['/clients/new']); 
+  }
+
+  editClient(clientId: number | undefined): void {
+    if (clientId !== undefined) {
+      this.router.navigate(['/clients', clientId]);
+    }
   }
 
   // editClient(client: Client): void {
