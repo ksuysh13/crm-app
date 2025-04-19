@@ -1,0 +1,39 @@
+<!-- manufacturer-list.component.html -->
+<div class="manufacturer-container">
+    <h1 class="title">Список производителей</h1>
+
+    <!-- <div class="search-bar">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Поиск производителей...">
+        <button (click)="onSearch()">Поиск</button>
+    </div> -->
+
+    <button class="add-manufacturer-btn" (click)="onCreateManufacturer()">+ Добавить производителя</button>
+    
+    <div *ngIf="manufacturers.length === 0" class="empty-state">
+      <mat-icon>factory</mat-icon>
+      <p>Производители не найдены</p>
+    </div>
+  
+    <div class="manufacturer-cards">
+      <mat-card *ngFor="let manufacturer of manufacturers" class="manufacturer-card">
+        <mat-card-header>
+          <div mat-card-avatar class="manufacturer-avatar">
+            {{ manufacturer.manufacturerName.charAt(0) }}
+          </div>
+          <mat-card-title>{{ manufacturer.manufacturerName }}</mat-card-title>
+          <mat-card-subtitle>ID: {{ manufacturer.manufacturerId }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="manufacturer-info">
+            <div class="info-row">
+              <mat-icon>public</mat-icon>
+              <span>{{ manufacturer.country || 'Не указано' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+        <button class="edit-manufacturer-btn" (click)="editManufacturer(manufacturer.manufacturerId)">Редактировать</button>
+        <button class="delete-manufacturer-btn" (click)="deleteManufacturer(manufacturer.manufacturerId)">Удалить</button>
+      </mat-card>
+    </div>
+</div>

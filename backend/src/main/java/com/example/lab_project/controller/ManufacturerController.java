@@ -26,7 +26,7 @@ import com.example.lab_project.model.Product;
 import com.example.lab_project.service.ManufacturerService;
 
 @RestController
-@RequestMapping("/manufacturer")
+@RequestMapping("/manufacturers")
 public class ManufacturerController {
     @Autowired
     private ManufacturerService manufacturerService;

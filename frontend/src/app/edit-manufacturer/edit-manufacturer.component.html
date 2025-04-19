@@ -1,0 +1,20 @@
+<!-- edit-manufacturer.component.html -->
+<form [formGroup]="manufacturerForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="manufacturerName">Название производителя:</label>
+      <input id="manufacturerName" type="text" formControlName="manufacturerName">
+      <div class="error" *ngIf="manufacturerForm.get('manufacturerName')?.invalid && manufacturerForm.get('manufacturerName')?.touched">
+        Название обязательно.
+      </div>
+    </div>
+  
+    <div>
+        <label for="country">Страна:</label>
+        <input id="country" type="text" formControlName="country">
+    </div>
+
+    <button style="margin-bottom: 10px;" type="submit" [disabled]="manufacturerForm.invalid">
+      {{ isEditMode ? 'Сохранить изменения' : 'Добавить производителя' }}
+    </button>
+    <button type="button" (click)="router.navigate(['/manufacturers'])">Отмена</button>
+</form>
