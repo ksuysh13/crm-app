@@ -71,4 +71,10 @@ export class ProductGroupListComponent implements OnInit {
       }
     }
   }
+
+  viewProducts(groupId: number | undefined): void {
+    if (groupId !== undefined) {
+      this.router.navigate(['/product-groups', groupId, 'products']);
+    }
+  }
 }

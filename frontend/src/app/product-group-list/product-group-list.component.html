@@ -10,7 +10,7 @@
     </div>
   
     <div class="product-group-cards">
-      <mat-card *ngFor="let group of productGroups" class="product-group-card">
+      <mat-card *ngFor="let group of productGroups" class="product-group-card" (click)="viewProducts(group.groupId)">
         <button class="menu-button" (click)="toggleMenu(group.groupId); $event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -34,6 +34,7 @@
             </div>
           </div>
         </mat-card-content>
+        
       </mat-card>
     </div>
 </div>

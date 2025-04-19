@@ -1,6 +1,7 @@
 package com.example.lab_project.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,21 @@ public class ProductController {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable Long productId) {
+        try {
+            Optional<Product> product = productService.findById(productId);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Product with ID " + productId + " not found");
+            }
+            return ResponseEntity.ok(productMapper.toDTO(product.get()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving product: " + e.getMessage());
+        }
+    }
 
     @GetMapping
     public List<ProductDTO> findAll(@RequestParam(required = false) String search) {

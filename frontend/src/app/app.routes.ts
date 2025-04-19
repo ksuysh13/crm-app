@@ -7,6 +7,8 @@ import { ManufacturerListComponent } from './manufacturer-list/manufacturer-list
 import { EditManufacturerComponent } from './edit-manufacturer/edit-manufacturer.component';
 import { ProductGroupListComponent } from './product-group-list/product-group-list.component';
 import { EditProductGroupComponent } from './edit-product-group/edit-product-group.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/clients', pathMatch: 'full' },
@@ -22,4 +24,7 @@ export const routes: Routes = [
     { path: 'product-groups', component: ProductGroupListComponent },
     { path: 'product-groups/new', component: EditProductGroupComponent },
     { path: 'product-groups/:groupId', component: EditProductGroupComponent },
+    { path: 'product-groups/:groupId/products', component: ProductListComponent },
+    { path: 'product-groups/:groupId/products/new', component: EditProductComponent },
+    { path: 'product-groups/:groupId/products/:productId', component: EditProductComponent }
 ];
