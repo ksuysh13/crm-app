@@ -49,12 +49,19 @@ export class ClientListComponent implements OnInit {
     this.router.navigate(['/clients/new']); 
   }
 
-  editClient(clientId: number | undefined): void {
+  toggleMenu(clientId: number | undefined): void {
     if (clientId !== undefined) {
-      this.router.navigate(['/clients', clientId]);
+      this.selectedClientId = this.selectedClientId === clientId ? null : clientId;
     }
   }
 
+  editClient(clientId: number | undefined): void {
+    if (clientId !== undefined) {
+      this.router.navigate(['/clients', clientId]);
+      this.selectedClientId = null; // Закрываем меню при переходе на редактирование
+    }
+  }
+  
   deleteClient(clientId: number | undefined): void {
     if (clientId !== undefined) {
       if (confirm('Вы уверены, что хотите удалить этого клиента?')) {

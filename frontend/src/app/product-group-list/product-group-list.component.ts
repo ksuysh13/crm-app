@@ -45,9 +45,16 @@ export class ProductGroupListComponent implements OnInit {
     this.router.navigate(['/product-groups/new']); 
   }
 
+  toggleMenu(groupId: number | undefined): void {
+    if (groupId !== undefined) {
+      this.selectedGroupId = this.selectedGroupId === groupId ? null : groupId;
+    }
+  }
+
   editProductGroup(groupId: number | undefined): void {
     if (groupId !== undefined) {
       this.router.navigate(['/product-groups', groupId]);
+      this.selectedGroupId = null;
     }
   }
 
