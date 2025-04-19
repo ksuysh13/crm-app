@@ -10,6 +10,13 @@
   
     <div class="discount-cards">
       <mat-card *ngFor="let discount of discounts" class="discount-card">
+        <button class="menu-button" (click)="toggleMenu(discount.discountId); $event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <div class="menu-content" [class.show]="selectedDiscountId === discount.discountId">
+            <button (click)="editDiscount(discount.discountId); $event.stopPropagation()">Редактировать</button>
+            <button (click)="deleteDiscount(discount.discountId); $event.stopPropagation()">Удалить</button>
+          </div>
         <mat-card-header>
           <div mat-card-avatar class="discount-avatar">
             {{ discount.discountPercentage }}%
@@ -30,8 +37,6 @@
             </div>
           </div>
         </mat-card-content>
-        <button class="edit-discount-btn" (click)="editDiscount(discount.discountId)">Редактировать</button>
-        <button class="delete-discount-btn" (click)="deleteDiscount(discount.discountId)">Удалить</button>
       </mat-card>
     </div>
 </div>

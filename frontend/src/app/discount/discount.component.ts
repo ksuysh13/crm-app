@@ -23,6 +23,7 @@ import { DatePipe } from '@angular/common';
 })
 export class DiscountComponent implements OnInit {
   discounts: Discount[] = [];
+  selectedDiscountId: number | null = null;
 
   constructor(
     private discountService: DiscountService,
@@ -44,9 +45,16 @@ export class DiscountComponent implements OnInit {
     this.router.navigate(['/discounts/new']);
   }
 
+  toggleMenu(discountId: number | undefined): void {
+    if (discountId !== undefined) {
+      this.selectedDiscountId = this.selectedDiscountId === discountId ? null : discountId;
+    }
+  }
+
   editDiscount(discountId: number | undefined): void {
     if (discountId !== undefined) {
       this.router.navigate(['/discounts', discountId]);
+      this.selectedDiscountId = null;
     }
   }
 
@@ -56,6 +64,7 @@ export class DiscountComponent implements OnInit {
         this.discountService.deleteDiscount(discountId).subscribe({
           next: () => {
             this.loadDiscounts();
+            this.selectedDiscountId = null;
           },
           error: (err) => console.error('Error deleting discount', err)
         });

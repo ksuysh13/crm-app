@@ -24,6 +24,7 @@ import { Router, RouterModule } from '@angular/router';
 export class ManufacturerListComponent implements OnInit {
   manufacturers: Manufacturer[] = [];
   searchTerm: string = '';
+  selectedManufacturerId: number | null = null;
 
   constructor(
     private manufacturerService: ManufacturerService,
@@ -45,9 +46,16 @@ export class ManufacturerListComponent implements OnInit {
     this.router.navigate(['/manufacturers/new']);
   }
 
+  toggleMenu(manufacturerId: number | undefined): void {
+    if (manufacturerId !== undefined) {
+      this.selectedManufacturerId = this.selectedManufacturerId === manufacturerId ? null : manufacturerId;
+    }
+  }
+
   editManufacturer(manufacturerId: number | undefined): void {
     if (manufacturerId !== undefined) {
       this.router.navigate(['/manufacturers', manufacturerId]);
+      this.selectedManufacturerId = null;
     }
   }
 
@@ -57,6 +65,7 @@ export class ManufacturerListComponent implements OnInit {
         this.manufacturerService.deleteManufacturer(manufacturerId).subscribe({
           next: () => {
             this.loadManufacturers();
+            this.selectedManufacturerId = null;
           },
           error: (err) => console.error('Error deleting manufacturer', err)
         });

@@ -25,6 +25,7 @@
 .discount-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: #7b79dc;
+    position: relative;
 }
 
 .discount-card:hover {
@@ -104,40 +105,49 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-.edit-discount-btn {
-    background-color: #ececf1;
-    color: rgb(1, 1, 1);
+.menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
     border: none;
-    padding: 10px 10px;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    margin-left: 15px;
-    transition: background-color 0.3s;
-    width: 40%;
-}
-
-.edit-discount-btn:hover {
-    background-color: #6a68c5;
-}
-
-.delete-discount-btn {
-    background-color: #ececf1;
-    color: rgb(1, 1, 1);
+    color: #757575;
+    z-index: 2;
+  }
+  
+  .menu-button:hover {
+    color: #333;
+  }
+  
+  .menu-content {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+  }
+  
+  .menu-content button {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
     border: none;
-    padding: 10px 10px;
-    border-radius: 5px;
+    background: none;
+    width: 100%;
+    text-align: left;
     cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    margin-left: 15px;
-    transition: background-color 0.3s;
-    width: 40%;
-}
-
-.delete-discount-btn:hover {
-    background-color: #6a68c5;
-}
+  }
+  
+  .menu-content button:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .show {
+    display: block;
+  }

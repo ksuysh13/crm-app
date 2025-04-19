@@ -16,6 +16,13 @@
   
     <div class="manufacturer-cards">
       <mat-card *ngFor="let manufacturer of manufacturers" class="manufacturer-card">
+        <button class="menu-button" (click)="toggleMenu(manufacturer.manufacturerId); $event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <div class="menu-content" [class.show]="selectedManufacturerId === manufacturer.manufacturerId">
+            <button (click)="editManufacturer(manufacturer.manufacturerId); $event.stopPropagation()">Редактировать</button>
+            <button (click)="deleteManufacturer(manufacturer.manufacturerId); $event.stopPropagation()">Удалить</button>
+          </div>
         <mat-card-header>
           <div mat-card-avatar class="manufacturer-avatar">
             {{ manufacturer.manufacturerName.charAt(0) }}
@@ -32,8 +39,6 @@
             </div>
           </div>
         </mat-card-content>
-        <button class="edit-manufacturer-btn" (click)="editManufacturer(manufacturer.manufacturerId)">Редактировать</button>
-        <button class="delete-manufacturer-btn" (click)="deleteManufacturer(manufacturer.manufacturerId)">Удалить</button>
       </mat-card>
     </div>
 </div>
