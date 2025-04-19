@@ -1,1 +1,37 @@
-<div class="discount-container"></div>
+<div class="discount-container">
+    <h1 class="title">Список скидок</h1>
+
+    <button class="add-discount-btn" (click)="onCreateDiscount()">+ Добавить скидку</button>
+    
+    <div *ngIf="discounts.length === 0" class="empty-state">
+      <mat-icon>percent</mat-icon>
+      <p>Скидки не найдены</p>
+    </div>
+  
+    <div class="discount-cards">
+      <mat-card *ngFor="let discount of discounts" class="discount-card">
+        <mat-card-header>
+          <div mat-card-avatar class="discount-avatar">
+            {{ discount.discountPercentage }}%
+          </div>
+          <mat-card-title>Скидка {{ discount.discountPercentage }}%</mat-card-title>
+          <mat-card-subtitle>ID: {{ discount.discountId }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="discount-info">
+            <div class="info-row">
+              <mat-icon>calendar_today</mat-icon>
+              <span>Начало: {{ discount.startDate | date:'dd.MM.yyyy' }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>event_available</mat-icon>
+              <span>Окончание: {{ discount.endDate | date:'dd.MM.yyyy' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+        <button class="edit-discount-btn" (click)="editDiscount(discount.discountId)">Редактировать</button>
+        <button class="delete-discount-btn" (click)="deleteDiscount(discount.discountId)">Удалить</button>
+      </mat-card>
+    </div>
+</div>
