@@ -1,5 +1,6 @@
 package com.example.lab_project.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,9 @@ public class DiscountService {
 
     public void deleteById(Long id) {
         discountRepository.deleteById(id);
+    }
+
+    public List<Discount> findAll() {
+        return discountRepository.findAll();
     }
 }

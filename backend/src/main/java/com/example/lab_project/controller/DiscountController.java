@@ -1,6 +1,8 @@
 package com.example.lab_project.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,14 @@ public class DiscountController {
 
     @Autowired
     private DiscountMapper discountMapper;
+
+    @GetMapping
+    public List<DiscountDTO> findAll() {
+        List<Discount> discounts = discountService.findAll();
+        return discounts.stream()
+                .map(discountMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{discountId}")
     public ResponseEntity<DiscountDTO> findById(@PathVariable Long discountId) {
