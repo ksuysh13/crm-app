@@ -1,0 +1,34 @@
+<!-- product-group-list.component.html -->
+<div class="product-group-container">
+    <h1 class="title">Список групп продуктов</h1>
+
+    <button class="add-product-group-btn" (click)="onCreateProductGroup()">+ Добавить группу</button>
+    
+    <div *ngIf="productGroups.length === 0" class="empty-state">
+      <mat-icon>category</mat-icon>
+      <p>Группы продуктов не найдены</p>
+    </div>
+  
+    <div class="product-group-cards">
+      <mat-card *ngFor="let group of productGroups" class="product-group-card">
+        <mat-card-header>
+          <div mat-card-avatar class="product-group-avatar">
+            {{ group.groupName.charAt(0) }}
+          </div>
+          <mat-card-title>{{ group.groupName }}</mat-card-title>
+          <mat-card-subtitle>ID: {{ group.groupId }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="product-group-info">
+            <div class="info-row">
+              <mat-icon>description</mat-icon>
+              <span>{{ group.description || 'Нет описания' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+        <button class="edit-product-group-btn" (click)="editProductGroup(group.groupId)">Редактировать</button>
+        <button class="delete-product-group-btn" (click)="deleteProductGroup(group.groupId)">Удалить</button>
+      </mat-card>
+    </div>
+</div>

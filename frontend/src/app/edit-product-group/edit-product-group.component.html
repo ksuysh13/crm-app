@@ -1,0 +1,19 @@
+<form [formGroup]="groupForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="groupName">Название категории:</label>
+      <input id="groupName" type="text" formControlName="groupName">
+      <div class="error" *ngIf="groupForm.get('groupName')?.invalid && groupForm.get('groupName')?.touched">
+        Название обязательно.
+      </div>
+    </div>
+  
+    <div>
+        <label for="description">Описание:</label>
+        <input id="description" type="text" formControlName="description">
+    </div>
+
+    <button style="margin-bottom: 10px;" type="submit" [disabled]="groupForm.invalid">
+      {{ isEditMode ? 'Сохранить изменения' : 'Добавить категорию продуктов' }}
+    </button>
+    <button type="button" (click)="router.navigate(['/product-groups'])">Отмена</button>
+</form>
