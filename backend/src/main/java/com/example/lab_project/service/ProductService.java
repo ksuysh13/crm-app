@@ -6,10 +6,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.lab_project.model.OrderItem;
 import com.example.lab_project.model.Product;
 import com.example.lab_project.repository.ManufacturerRepository;
 import com.example.lab_project.repository.ProductGroupRepository;
 import com.example.lab_project.repository.ProductRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductService {
@@ -21,6 +25,9 @@ public class ProductService {
 
     @Autowired
     private ManufacturerRepository manufacturerRepository;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
@@ -70,6 +77,21 @@ public class ProductService {
     // Проверка существования производителя по ID
     public boolean existsManufacturerById(Long manufacturerId) {
         return manufacturerRepository.existsById(manufacturerId);
+    }
+
+    @Transactional
+    public void deleteById(Long productId) {
+        // Находим все элементы заказа с этим товаром
+        List<OrderItem> orderItems = orderItemService.findByProduct(productId);
+        
+        // Устанавливаем product = null для каждого элемента заказа
+        for (OrderItem item : orderItems) {
+            item.setProduct(null);
+            orderItemService.save(item);
+        }
+        
+        // Теперь можно безопасно удалить товар
+        productRepository.deleteById(productId);
     }
 
     // // Найти продукт по ID продукта и ID группы продуктов

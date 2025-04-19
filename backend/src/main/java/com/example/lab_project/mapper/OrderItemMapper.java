@@ -15,11 +15,28 @@ public class OrderItemMapper {
         dto.setOrderItemId(orderItem.getOrderItemId());
         dto.setPrice(orderItem.getPrice());
         dto.setQuantity(orderItem.getQuantity());
-        // dto.setDiscountId(orderItem.getDiscount().getDiscountId());
-        // Обрабатываем случай, когда discount равен null
-        dto.setDiscountId(orderItem.getDiscount() != null ? orderItem.getDiscount().getDiscountId() : null);
+        
+        // Обработка заказа
         dto.setOrderId(orderItem.getOrder().getOrderId());
-        dto.setProductId(orderItem.getProduct().getProductId());
+        
+        // Обработка продукта
+        if (orderItem.getProduct() != null) {
+            dto.setProductId(orderItem.getProduct().getProductId());
+            dto.setProductName(orderItem.getProduct().getProductName());
+        } else {
+            dto.setProductId(null);
+            dto.setProductUnavailable();
+        }
+        
+        // Обработка скидки
+        if (orderItem.getDiscount() != null) {
+            dto.setDiscountId(orderItem.getDiscount().getDiscountId());
+            dto.setDiscountInfo(orderItem.getDiscount().getDiscountPercentage() + "%");
+        } else {
+            dto.setDiscountId(null);
+            dto.setDiscountUnavailable();
+        }
+        
         return dto;
     }
 
@@ -28,11 +45,16 @@ public class OrderItemMapper {
         orderItem.setOrderItemId(dto.getOrderItemId());
         orderItem.setPrice(dto.getPrice());
         orderItem.setQuantity(dto.getQuantity());
-        // orderItem.setDiscount(new Discount(dto.getDiscountId()));
-        // Устанавливаем discount только если discountId не null
-        orderItem.setDiscount(dto.getDiscountId() != null ? new Discount(dto.getDiscountId()) : null);
+        
+        // Устанавливаем заказ
         orderItem.setOrder(new Order(dto.getOrderId()));
-        orderItem.setProduct(new Product(dto.getProductId()));
+        
+        // Устанавливаем продукт (может быть null)
+        orderItem.setProduct(dto.getProductId() != null ? new Product(dto.getProductId()) : null);
+        
+        // Устанавливаем скидку (может быть null)
+        orderItem.setDiscount(dto.getDiscountId() != null ? new Discount(dto.getDiscountId()) : null);
+        
         return orderItem;
     }
 }

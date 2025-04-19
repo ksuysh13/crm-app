@@ -24,14 +24,6 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    // @ManyToOne
-    // @JoinColumn(name = "product_id", nullable = false)
-    // private Product product;
-
-    // @ManyToOne
-    // @JoinColumn(name = "discount_id", nullable = true)
-    // private Discount discount;
-
     @ManyToOne(fetch = FetchType.EAGER) // Явная загрузка продукта
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -39,4 +31,14 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.EAGER) // Явная загрузка скидки
     @JoinColumn(name = "discount_id", nullable = true) // Разрешаем NULL
     private Discount discount;
+
+    // Методы для проверки доступности связанных сущностей
+    public String getProductName() {
+        return product != null ? product.getProductName() : "Недоступно";
+    }
+
+    public String getDiscountInfo() {
+        return discount != null ? 
+               discount.getDiscountPercentage() + "%" : "Недоступно";
+    }
 }

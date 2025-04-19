@@ -64,11 +64,12 @@ public class DiscountController {
     }
 
     @DeleteMapping("/{discountId}")
-    public ResponseEntity<Void> delete(@PathVariable Long discountId) {
-        if (discountService.findById(discountId).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<Void> deleteDiscount(@PathVariable Long discountId) {
+        try {
+            discountService.deleteById(discountId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        discountService.deleteById(discountId);
-        return ResponseEntity.noContent().build();
     }
 }

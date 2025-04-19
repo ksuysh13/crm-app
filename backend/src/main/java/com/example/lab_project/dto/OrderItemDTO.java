@@ -12,4 +12,15 @@ public class OrderItemDTO {
     private Long discountId;
     private Integer quantity;
     private BigDecimal price;
+    private String productName;
+    private String discountInfo;
+
+    // методы для установки информации о недоступных сущностях
+    public void setProductUnavailable() {
+        this.productName = "Недоступно";
+    }
+
+    public void setDiscountUnavailable() {
+        this.discountInfo = "Недоступно";
+    }
 }
