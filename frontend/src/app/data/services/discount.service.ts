@@ -29,7 +29,7 @@ export class DiscountService {
   createDiscount(discount: Discount): Observable<Discount> {
     return this.http.post<Discount>(this.apiUrl, discount);
   }
-
+  
   updateDiscount(id: number, discount: Discount): Observable<Discount> {
     return this.http.put<Discount>(`${this.apiUrl}/${id}`, discount);
   }

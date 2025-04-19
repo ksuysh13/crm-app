@@ -1,0 +1,30 @@
+<form [formGroup]="discountForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="discountPercentage">Процент скидки:</label>
+      <input id="discountPercentage" type="number" formControlName="discountPercentage" min="1" max="100">
+      <div class="error" *ngIf="discountForm.get('discountPercentage')?.invalid && discountForm.get('discountPercentage')?.touched">
+        Введите процент скидки (1-100%).
+      </div>
+    </div>
+  
+    <div>
+      <label for="startDate">Дата начала:</label>
+      <input id="startDate" type="date" formControlName="startDate">
+      <div class="error" *ngIf="discountForm.get('startDate')?.invalid && discountForm.get('startDate')?.touched">
+        Укажите дату начала.
+      </div>
+    </div>
+
+    <div>
+      <label for="endDate">Дата окончания:</label>
+      <input id="endDate" type="date" formControlName="endDate">
+      <div class="error" *ngIf="discountForm.get('endDate')?.invalid && discountForm.get('endDate')?.touched">
+        Укажите дату окончания.
+      </div>
+    </div>
+  
+    <button style="margin-bottom: 10px;" type="submit" [disabled]="discountForm.invalid">
+      {{ isEditMode ? 'Сохранить изменения' : 'Добавить скидку' }}
+    </button>
+    <button type="button" (click)="router.navigate(['/discounts'])">Отмена</button>
+</form>
