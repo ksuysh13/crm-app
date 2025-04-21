@@ -1,0 +1,24 @@
+.edit-order-item-container {
+    padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .form-row {
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  
+  .button-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  .delete-btn {
+    margin-left: auto;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }

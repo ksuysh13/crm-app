@@ -91,20 +91,27 @@ public class OrderItemController {
         }
     }
 
-    // @PutMapping("/{id}")
-    // public ResponseEntity<OrderItemDTO> updateOrderItem(
-    //         @PathVariable Long id, @RequestBody OrderItemDTO orderItemDTO) {
-    //     return orderItemService.update(id, orderItemDTO)
-    //             .map(ResponseEntity::ok)
-    //             .orElse(ResponseEntity.notFound().build());
-    // }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
-        if (orderItemService.delete(id)) {
+    public ResponseEntity<?> deleteOrderItem(@PathVariable Long id) {
+        // try {
+        //     if (orderItemService.delete(id)) {
+        //         return ResponseEntity.noContent().build();
+        //     }
+        //     return ResponseEntity.notFound().build();
+        // } catch (Exception e) {
+        //     return ResponseEntity.internalServerError()
+        //             .body(Map.of(
+        //                 "error", "Failed to delete order item",
+        //                 "details", e.getMessage()
+        //             ));
+        // }
+
+        try {
+            orderItemService.deleteById(id);
             return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{orderItemId}")
@@ -112,12 +119,10 @@ public class OrderItemController {
             @PathVariable Long orderItemId,
             @RequestBody OrderItemDTO orderItemDTO) {
         try {
-            // log.info("Updating order item {} with data: {}", orderItemId, orderItemDTO);
             Optional<OrderItemDTO> result = orderItemService.update(orderItemId, orderItemDTO);
             return result.map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
-            // log.error("Error updating order item: {}", e.getMessage());
             return ResponseEntity.internalServerError()
                     .body(Map.of(
                         "error", "Failed to update order item",

@@ -232,20 +232,31 @@ public class OrderItemService {
             });
     }
 
+
     @Transactional
-    public boolean delete(Long id) {
-        return orderItemRepository.findById(id)
-            .map(orderItem -> {
-                Order order = orderItem.getOrder();
-                orderItemRepository.delete(orderItem);
-                
-                // Пересчитываем сумму заказа после удаления элемента
-                order.calculateTotalAmount();
-                orderRepository.save(order);
-                
-                return true;
-            })
-            .orElse(false);
+    public void delete(Long id) {
+        // return orderItemRepository.findById(id)
+        //     .map(orderItem -> {
+        //         try {
+        //             Order order = orderItem.getOrder();
+                    
+        //             if (order.isCompleted()) {
+        //                 throw new IllegalStateException("Невозможно изменить элементы в завершенном заказе");
+        //             }
+                    
+        //             orderItemRepository.delete(orderItem);
+                    
+        //             // перерасчет суммы
+        //             order.calculateTotalAmount();
+        //             orderRepository.save(order);
+                    
+        //             return true;
+        //         } catch (Exception e) {
+        //             throw new RuntimeException("Не удалось удалить позицию заказа: " + e.getMessage(), e);
+        //         }
+        //     })
+        //     .orElse(false);
+        orderItemRepository.deleteById(id);
     }
 
     private BigDecimal calculateDiscountedPrice(BigDecimal originalPrice, Discount discount) {
@@ -260,4 +271,5 @@ public class OrderItemService {
         return originalPrice.subtract(discountAmount)
                         .setScale(2, RoundingMode.HALF_UP); // → 89.99
     }
+    
 }
