@@ -42,6 +42,7 @@ export class EditOrderItemComponent implements OnInit {
   products: Product[] = [];
   discounts: Discount[] = [];
   isLoading = false;
+  currentProduct?: Product;
 
   constructor(
     private fb: FormBuilder,
@@ -63,25 +64,40 @@ export class EditOrderItemComponent implements OnInit {
   ngOnInit(): void {
     this.clientId = +this.route.snapshot.params['clientId'];
     this.orderId = +this.route.snapshot.params['orderId'];
-    this.orderItemId = this.route.snapshot.params['orderItemId'];
+    const orderItemIdParam = this.route.snapshot.params['orderItemId'];
     
-    // Проверка, является ли orderItemId числом, а не NaN
-    this.isEditMode = typeof this.orderItemId === 'number' && !isNaN(this.orderItemId);
+    this.isEditMode = orderItemIdParam && orderItemIdParam !== 'new';
+    
+    if (this.isEditMode) {
+      this.orderItemId = +orderItemIdParam;
+    }
     
     this.loadProducts();
     this.loadDiscounts();
-    if (this.isEditMode) {
-        this.loadOrderItem();
+    
+    if (this.isEditMode && this.orderItemId) {
+      this.loadOrderItem();
     }
     
+    // Подписки на изменения
     this.orderItemForm.get('productId')?.valueChanges.subscribe(productId => {
-        this.updatePrice(productId);
+      this.updatePrice(productId);
     });
-}
+    
+    this.orderItemForm.get('discountId')?.valueChanges.subscribe(discountId => {
+      this.applyDiscount(discountId);
+    });
+  }
 
   loadProducts(): void {
     this.productService.getAllProducts().subscribe({
-      next: (products) => this.products = products,
+      next: (products) => {
+        this.products = products;
+        // Если режим редактирования и товар еще не загружен, попробуем обновить цену
+        if (this.isEditMode && this.orderItemForm.value.productId) {
+          this.updatePrice(this.orderItemForm.value.productId);
+        }
+      },
       error: (err) => console.error('Error loading products', err)
     });
   }
@@ -98,17 +114,27 @@ export class EditOrderItemComponent implements OnInit {
 
     this.isLoading = true;
     this.orderItemService.getOrderItemById(this.orderItemId).subscribe({
-      next: (orderItem) => {
+      next: (orderItem: any) => {
+        // Обрабатываем данные, которые могут приходить в разных форматах
+        const productId = orderItem.product?.productId || orderItem.productId;
+        const discountId = orderItem.discount?.discountId || orderItem.discountId;
+        const price = orderItem.price;
+        const quantity = orderItem.quantity;
+
         this.orderItemForm.patchValue({
-          productId: orderItem.product?.productId,
-          quantity: orderItem.quantity,
-          discountId: orderItem.discount?.discountId,
-          price: orderItem.price
+          productId: productId,
+          quantity: quantity,
+          discountId: discountId,
+          price: price
         });
+
+        // Находим текущий продукт для расчета скидки
+        this.currentProduct = this.products.find(p => p.productId === productId);
         this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading order item', err);
+        this.snackBar.open('Ошибка загрузки элемента заказа', 'Закрыть', { duration: 3000 });
         this.isLoading = false;
       }
     });
@@ -117,10 +143,31 @@ export class EditOrderItemComponent implements OnInit {
   updatePrice(productId: number): void {
     const product = this.products.find(p => p.productId === productId);
     if (product) {
+      this.currentProduct = product;
       this.orderItemForm.patchValue({
         price: product.price
       });
+      // Применяем текущую скидку (если есть) к новой цене
+      this.applyDiscount(this.orderItemForm.value.discountId);
     }
+  }
+
+  applyDiscount(discountId: number | null): void {
+    if (!this.currentProduct) return;
+    
+    let price = this.currentProduct.price;
+    
+    if (discountId) {
+      const discount = this.discounts.find(d => d.discountId === discountId);
+      if (discount) {
+        const discountAmount = price * (discount.discountPercentage / 100);
+        price = price - discountAmount;
+      }
+    }
+    
+    this.orderItemForm.patchValue({
+      price: price
+    });
   }
 
   onSubmit(): void {

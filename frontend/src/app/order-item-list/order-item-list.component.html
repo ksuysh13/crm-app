@@ -4,7 +4,7 @@
         <mat-card-title>Элементы заказа #{{orderId}}</mat-card-title>
         <mat-card-subtitle *ngIf="order">
           Статус: {{order.isCompleted ? 'Завершен' : 'В обработке'}} | 
-          Общая сумма: {{getOrderTotal() | currency}}
+          Общая сумма: {{getOrderTotal() | currency:'RUB':'symbol':'1.2-2'}}
         </mat-card-subtitle>
       </mat-card-header>
   
