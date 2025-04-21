@@ -19,6 +19,10 @@ export class ProductService {
 
   http: HttpClient = inject(HttpClient);
 
+  getAllProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(`${this.apiUrl}`)
+  }
+
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
