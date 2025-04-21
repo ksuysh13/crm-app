@@ -72,10 +72,23 @@ export class OrderItemListComponent implements OnInit {
 
   loadOrderItems(): void {
     this.orderItemService.getOrderItemsByOrder(this.orderId).subscribe({
-      next: (items) => this.orderItems = items,
-      error: (err) => console.error('Error loading order items', err)
+        next: (items: any[]) => {
+            this.orderItems = items.map(item => ({
+                ...item,
+                product: {
+                    productId: item.productId,
+                    productName: item.productName
+                },
+                discount: item.discountId ? {
+                    discountId: item.discountId,
+                    discountPercentage: parseFloat(item.discountInfo?.replace('%', '')) || 0
+                } : undefined
+            }));
+            console.log('Processed order items:', this.orderItems);
+        },
+        error: (err) => console.error('Error loading order items', err)
     });
-  }
+}
 
   onAddItem(): void {
     this.router.navigate(['/clients', this.clientId, 'orders', this.orderId, 'order-items', 'new']);

@@ -6,6 +6,6 @@ export interface OrderItem {
     quantity: number;
     price: number;
     orderId: number;
-    product?: Product;
-    discount?: Discount;
+    product?: Product | { productId: number, productName: string }; 
+    discount?: Discount | { discountId: number, discountPercentage: number }; 
 }
