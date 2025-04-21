@@ -78,10 +78,8 @@ public class OrderController {
         }
 
         Order order = existingOrder.get();
-        order.setOrderDate(orderDTO.getOrderDate()); // Обновляем только дату и статус
+        order.setOrderDate(orderDTO.getOrderDate());
         order.setCompleted(orderDTO.isCompleted());
-        
-        // totalAmount не обновляем вручную — он рассчитывается автоматически!
         
         Order updatedOrder = orderService.save(order);
         return ResponseEntity.ok(orderMapper.toDTO(updatedOrder));

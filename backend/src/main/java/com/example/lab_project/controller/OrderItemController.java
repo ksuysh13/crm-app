@@ -57,9 +57,23 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItemDTO> createOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
-        OrderItemDTO createdItem = orderItemService.create(orderItemDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
+    public ResponseEntity<?> createOrderItem(@RequestBody OrderItemDTO orderItemDTO) {
+        try {
+            OrderItemDTO createdItem = orderItemService.create(orderItemDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of(
+                        "error", "Нельзя добавить элемент в завершенный заказ",
+                        "details", e.getMessage()
+                    ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of(
+                        "error", "Ошибка при создании элемента заказа",
+                        "details", e.getMessage()
+                    ));
+        }
     }
 
     // @PutMapping("/{id}")

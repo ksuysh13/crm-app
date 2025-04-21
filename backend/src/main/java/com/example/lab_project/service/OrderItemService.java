@@ -151,37 +151,33 @@ public class OrderItemService {
     //             discount.getDiscountPercentage().divide(BigDecimal.valueOf(100))));
     // }
 
-    // OrderItemService.java
     @Transactional
     public OrderItemDTO create(OrderItemDTO orderItemDTO) {
         Order order = orderRepository.findById(orderItemDTO.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Заказ не найден"));
+        
+        // Проверка, что заказ не завершен
+        if (order.isCompleted()) {
+            throw new IllegalStateException("Нельзя добавить элемент в завершенный заказ");
+        }
+    
         Product product = productRepository.findById(orderItemDTO.getProductId())
                 .orElseThrow(() -> new RuntimeException("Продукт не найден"));
-
+    
         OrderItem orderItem = orderItemMapper.toEntity(orderItemDTO);
         orderItem.setOrder(order);
         orderItem.setProduct(product);
-
-        // if (orderItemDTO.getDiscountId() != null) {
-        //     Discount discount = discountRepository.findById(orderItemDTO.getDiscountId())
-        //             .orElseThrow(() -> new RuntimeException("Скидка не найдена"));
-        //     orderItem.setDiscount(discount);
-        //     orderItem.setPrice(calculateDiscountedPrice(product.getPrice(), discount));
-        // } else {
-        //     orderItem.setPrice(product.getPrice());
-        // }
-
+    
         if (orderItemDTO.getDiscountId() != null) {
             Discount discount = discountRepository.findById(orderItemDTO.getDiscountId())
                     .orElseThrow(() -> new RuntimeException("Скидка не найдена"));
             orderItem.setDiscount(discount);
             orderItem.setPrice(calculateDiscountedPrice(product.getPrice(), discount));
         } else {
-            orderItem.setDiscount(null); // Явно устанавливаем null
+            orderItem.setDiscount(null);
             orderItem.setPrice(product.getPrice());
         }
-
+    
         OrderItem savedItem = orderItemRepository.save(orderItem);
         
         // Пересчитываем сумму заказа после добавления элемента
