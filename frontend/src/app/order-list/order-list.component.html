@@ -29,7 +29,7 @@
           <div class="order-info">
             <div class="info-row">
               <mat-icon>attach_money</mat-icon>
-              <span>Сумма: {{ order.totalAmount | currency }}</span>
+              <span>Сумма: {{ order.totalAmount | currency:'RUB':'symbol':'1.2-2' }}</span>
             </div>
             <div class="info-row">
               <mat-icon>{{ order.isCompleted ? 'check_circle' : 'pending' }}</mat-icon>
