@@ -1,0 +1,143 @@
+/* Create src/app/order-list/order-list.component.css */
+.order-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffff;
+    border-radius: 5px;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+    color: #3f51b5;
+    margin-bottom: 32px;
+    font-weight: 500;
+}
+
+.add-order-btn {
+    background-color: #7b79dc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.add-order-btn:hover {
+    background-color: #6a68c5;
+}
+
+.order-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.order-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #7b79dc;
+    position: relative;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(199, 29, 29, 0.1);
+}
+
+.order-info {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.order-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #757575;
+    z-index: 2;
+}
+
+.menu-button:hover {
+    color: #333;
+}
+
+.menu-content {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+}
+
+.menu-content button {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.menu-content button:hover {
+    background-color: #f1f1f1;
+}
+
+.show {
+    display: block;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    color: #757575;
+}
+
+.empty-state mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.info-row mat-icon {
+    margin-right: 8px;
+    color: #757575;
+}

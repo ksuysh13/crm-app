@@ -1,0 +1,42 @@
+<!-- Create src/app/order-list/order-list.component.html -->
+<div class="order-container">
+    <h1 class="title">Заказы клиента</h1>
+  
+    <button class="add-order-btn" (click)="onCreateOrder()">+ Добавить заказ</button>
+    
+    <div *ngIf="orders.length === 0" class="empty-state">
+      <mat-icon>receipt</mat-icon>
+      <p>Заказы не найдены</p>
+    </div>
+  
+    <div class="order-cards">
+      <mat-card *ngFor="let order of orders" class="order-card">
+        <button class="menu-button" (click)="toggleMenu(order.orderId); $event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <div class="menu-content" [class.show]="selectedOrderId === order.orderId">
+          <button (click)="editOrder(order.orderId); $event.stopPropagation()">Редактировать</button>
+          <button (click)="deleteOrder(order.orderId); $event.stopPropagation()">Удалить</button>
+          <button (click)="recalculateOrder(order.orderId!); $event.stopPropagation()">Пересчитать</button>
+        </div>
+        
+        <mat-card-header>
+          <mat-card-title>Заказ #{{ order.orderId }}</mat-card-title>
+          <mat-card-subtitle>Дата: {{ order.orderDate | date:'dd.MM.yyyy' }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="order-info">
+            <div class="info-row">
+              <mat-icon>attach_money</mat-icon>
+              <span>Сумма: {{ order.totalAmount | currency }}</span>
+            </div>
+            <div class="info-row">
+              <mat-icon>{{ order.isCompleted ? 'check_circle' : 'pending' }}</mat-icon>
+              <span>Статус: {{ order.isCompleted ? 'Завершен' : 'В обработке' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

@@ -76,6 +76,12 @@ export class ClientListComponent implements OnInit {
     }
   }
 
+  viewClientOrders(clientId: number | undefined): void {
+    if (clientId !== undefined) {
+      this.router.navigate(['/clients', clientId, 'orders']);
+    }
+  }
+
   // editClient(client: Client): void {
   //   const dialogRef = this.dialog.open(ClientEditDialogComponent, {
   //     width: '500px',

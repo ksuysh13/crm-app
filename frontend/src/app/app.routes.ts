@@ -9,12 +9,17 @@ import { ProductGroupListComponent } from './product-group-list/product-group-li
 import { EditProductGroupComponent } from './edit-product-group/edit-product-group.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { OrderListComponent } from './order-list/order-list.component';
+import { EditOrderComponent } from './edit-order/edit-order.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/clients', pathMatch: 'full' },
     {path: 'clients', component: ClientListComponent},
     { path: 'clients/new', component: EditClientComponent },
     { path: 'clients/:clientId', component: EditClientComponent },
+    { path: 'clients/:clientId/orders', component: OrderListComponent },
+    { path: 'clients/:clientId/orders/new', component: EditOrderComponent },
+    { path: 'clients/:clientId/orders/:orderId', component: EditOrderComponent },
     {path: 'discounts', component: DiscountComponent},
     {path: 'discounts/new', component: EditDiscountComponent},
     {path: 'discounts/:discountId', component: EditDiscountComponent},

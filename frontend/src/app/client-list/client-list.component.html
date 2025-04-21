@@ -9,7 +9,7 @@
   </div>
 
   <div class="client-cards">
-    <mat-card *ngFor="let client of clients" class="client-card">
+    <mat-card *ngFor="let client of clients" class="client-card" (click)="viewClientOrders(client.clientId)">
       <button class="menu-button" (click)="toggleMenu(client.clientId); $event.stopPropagation()">
         <mat-icon>more_vert</mat-icon>
       </button>

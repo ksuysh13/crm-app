@@ -1,0 +1,30 @@
+<!-- Create src/app/edit-order/edit-order.component.html -->
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Дата заказа</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="orderDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="orderForm.get('orderDate')?.invalid && orderForm.get('orderDate')?.touched">
+                Дата заказа обязательна
+            </mat-error>
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Сумма заказа</mat-label>
+            <input matInput formControlName="totalAmount" type="number" step="0.01">
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-checkbox formControlName="isCompleted">Завершен</mat-checkbox>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="orderForm.invalid">
+        {{ isEditMode ? 'Сохранить изменения' : 'Создать заказ' }}
+    </button>
+    <button mat-button type="button" (click)="router.navigate(['/clients', clientId, 'orders'])">Отмена</button>
+</form>
