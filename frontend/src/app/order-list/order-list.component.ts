@@ -83,4 +83,10 @@ export class OrderListComponent implements OnInit {
       error: (err) => console.error('Error recalculating order', err)
     });
   }
+
+  viewOrderItems(orderId: number | undefined): void {
+    if (orderId !== undefined) {
+        this.router.navigate(['/clients', this.clientId, 'orders', orderId, 'order-items']);
+    }
+  }
 }

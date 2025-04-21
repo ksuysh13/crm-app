@@ -11,6 +11,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { OrderListComponent } from './order-list/order-list.component';
 import { EditOrderComponent } from './edit-order/edit-order.component';
+import { OrderItemListComponent } from './order-item-list/order-item-list.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/clients', pathMatch: 'full' },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'clients/:clientId/orders', component: OrderListComponent },
     { path: 'clients/:clientId/orders/new', component: EditOrderComponent },
     { path: 'clients/:clientId/orders/:orderId', component: EditOrderComponent },
+    { path: 'clients/:clientId/orders/:orderId/order-items', component: OrderItemListComponent },
     {path: 'discounts', component: DiscountComponent},
     {path: 'discounts/new', component: EditDiscountComponent},
     {path: 'discounts/:discountId', component: EditDiscountComponent},

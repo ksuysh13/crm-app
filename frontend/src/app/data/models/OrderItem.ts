@@ -1,10 +1,11 @@
-// import { Client } from "./Client";
+import { Discount } from './Discount';
+import { Product } from './Product';
 
-// export interface OrderItem {
-//     orderItemId: number;
-//     orderDate: string; 
-//     quantity: number;
-//     isCompleted: boolean;
-//     client: Client;
-//     orderItems?: OrderItem[];
-//   }
+export interface OrderItem {
+    orderItemId?: number;
+    quantity: number;
+    price: number;
+    orderId: number;
+    product?: Product;
+    discount?: Discount;
+}

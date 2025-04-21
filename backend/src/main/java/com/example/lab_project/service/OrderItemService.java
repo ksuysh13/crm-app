@@ -39,6 +39,10 @@ public class OrderItemService {
     @Autowired
     private DiscountRepository discountRepository;
 
+    public Optional<OrderItem> findById(Long id) {
+        return orderItemRepository.findById(id);
+    }
+
     public List<OrderItem> findByOrder(Long orderId) {
         return orderItemRepository.findByOrder_OrderId(orderId);
     }

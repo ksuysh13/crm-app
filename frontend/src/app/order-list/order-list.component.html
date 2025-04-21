@@ -10,7 +10,7 @@
     </div>
   
     <div class="order-cards">
-      <mat-card *ngFor="let order of orders" class="order-card">
+      <mat-card *ngFor="let order of orders" class="order-card" (click)="viewOrderItems(order.orderId)">
         <button class="menu-button" (click)="toggleMenu(order.orderId); $event.stopPropagation()">
           <mat-icon>more_vert</mat-icon>
         </button>

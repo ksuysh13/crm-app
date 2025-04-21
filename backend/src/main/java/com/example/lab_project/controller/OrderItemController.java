@@ -32,6 +32,21 @@ public class OrderItemController {
     @Autowired
     private OrderItemService orderItemService;
 
+    @GetMapping("/{orderItemId}")
+    public ResponseEntity<?> getOrderItemById(@PathVariable Long orderItemId) {
+        try {
+            Optional<OrderItem> orderItem = orderItemService.findById(orderItemId);
+            if (orderItem.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Item with ID " + orderItemId + " not found");
+            }
+            return ResponseEntity.ok(orderItemMapper.toDTO(orderItem.get()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error retrieving product: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/order/{orderId}")
     public List<OrderItemDTO> findByOrder(@PathVariable Long orderId) {
         List<OrderItem> orderItems = orderItemService.findByOrder(orderId);
