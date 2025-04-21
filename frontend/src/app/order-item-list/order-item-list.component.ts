@@ -77,7 +77,8 @@ export class OrderItemListComponent implements OnInit {
                 ...item,
                 product: {
                     productId: item.productId,
-                    productName: item.productName
+                    productName: item.productName,
+                    price: item.price
                 },
                 discount: item.discountId ? {
                     discountId: item.discountId,
@@ -103,7 +104,7 @@ export class OrderItemListComponent implements OnInit {
       this.orderItemService.deleteOrderItem(orderItemId).subscribe({
         next: () => {
           this.loadOrderItems();
-          this.loadOrder(); // Refresh order to update total amount
+          this.loadOrder(); 
         },
         error: (err) => console.error('Error deleting order item', err)
       });
@@ -115,7 +116,7 @@ export class OrderItemListComponent implements OnInit {
     const quantity = item.quantity;
     const discount = item.discount?.discountPercentage || 0;
     
-    return price * quantity * (1 - discount / 100);
+    return price * quantity;
   }
 
   getOrderTotal(): number {

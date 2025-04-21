@@ -3,6 +3,8 @@ import { environment } from '../../enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrderItem } from '../models/OrderItem';
+import { Product } from '../models/Product';
+import { Discount } from '../models/Discount';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +38,13 @@ export class OrderItemService {
 
   deleteOrderItem(orderItemId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${orderItemId}`);
+  }
+
+  getAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${environment.apiUrl}products`);
+  }
+  
+  getAllDiscounts(): Observable<Discount[]> {
+    return this.http.get<Discount[]>(`${environment.apiUrl}discounts`);
   }
 }
