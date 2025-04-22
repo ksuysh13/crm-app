@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Discount } from '../data/models/Discount';
 import { DiscountService } from '../data/services/discount.service';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-discount',
@@ -24,6 +25,8 @@ import { DatePipe } from '@angular/common';
 export class DiscountComponent implements OnInit {
   discounts: Discount[] = [];
   selectedDiscountId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private discountService: DiscountService,

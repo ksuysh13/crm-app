@@ -1,5 +1,5 @@
 // product-group-list.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ProductGroupService } from '../data/services/product-group.service';
 import { ProductGroup } from '../data/models/ProductGroup';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-product-group-list',
@@ -24,6 +25,8 @@ import { Router, RouterModule } from '@angular/router';
 export class ProductGroupListComponent implements OnInit {
   productGroups: ProductGroup[] = [];
   selectedGroupId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private productGroupService: ProductGroupService,

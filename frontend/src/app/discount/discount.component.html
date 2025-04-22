@@ -1,7 +1,10 @@
 <div class="discount-container">
     <h1 class="title">Список скидок</h1>
 
-    <button class="add-discount-btn" (click)="onCreateDiscount()">+ Добавить скидку</button>
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
+
+      <button class="add-discount-btn" (click)="onCreateDiscount()">+ Добавить скидку</button>
+    }
     
     <div *ngIf="discounts.length === 0" class="empty-state">
       <mat-icon>percent</mat-icon>
@@ -10,6 +13,7 @@
   
     <div class="discount-cards">
       <mat-card *ngFor="let discount of discounts" class="discount-card">
+        @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(discount.discountId); $event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -17,6 +21,7 @@
             <button (click)="editDiscount(discount.discountId); $event.stopPropagation()">Редактировать</button>
             <button (click)="deleteDiscount(discount.discountId); $event.stopPropagation()">Удалить</button>
           </div>
+        }
         <mat-card-header>
           <div mat-card-avatar class="discount-avatar">
             {{ discount.discountPercentage }}%

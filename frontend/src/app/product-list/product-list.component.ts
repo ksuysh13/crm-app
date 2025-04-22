@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../data/services/product.service';
 import { Product } from '../data/models/Product';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +24,8 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   groupId!: number;
   selectedProductId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private productService: ProductService,

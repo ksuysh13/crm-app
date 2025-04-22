@@ -10,9 +10,11 @@
   
       <mat-card-content>
         <div class="button-row">
+          @if (authService.isAuth() && authService.role === 'ADMIN') {
           <button mat-raised-button color="primary" (click)="onAddItem()" [disabled]="isOrderCompleted">
             <mat-icon>add</mat-icon> Добавить элемент
           </button>
+        }
           <button mat-raised-button (click)="backToOrders()">
             <mat-icon>arrow_back</mat-icon> Назад к заказам
           </button>
@@ -59,17 +61,20 @@
           </ng-container>
   
           <!-- Actions Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Действия</th>
-            <td mat-cell *matCellDef="let item">
-              <button mat-icon-button (click)="onEditItem(item.orderItemId!)" [disabled]="isOrderCompleted">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="onDeleteItem(item.orderItemId!)" [disabled]="isOrderCompleted">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
+           
+          @if (authService.isAuth() && authService.role === 'ADMIN') {
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Действия</th>
+              <td mat-cell *matCellDef="let item">
+                <button mat-icon-button (click)="onEditItem(item.orderItemId!)" [disabled]="isOrderCompleted">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDeleteItem(item.orderItemId!)" [disabled]="isOrderCompleted">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+          }
   
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

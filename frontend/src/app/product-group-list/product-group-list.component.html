@@ -2,8 +2,9 @@
 <div class="product-group-container">
     <h1 class="title">Список групп продуктов</h1>
 
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-product-group-btn" (click)="onCreateProductGroup()">+ Добавить группу</button>
-    
+    }
     <div *ngIf="productGroups.length === 0" class="empty-state">
       <mat-icon>category</mat-icon>
       <p>Группы продуктов не найдены</p>
@@ -11,6 +12,7 @@
   
     <div class="product-group-cards">
       <mat-card *ngFor="let group of productGroups" class="product-group-card" (click)="viewProducts(group.groupId)">
+        @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(group.groupId); $event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -18,6 +20,7 @@
             <button (click)="editProductGroup(group.groupId); $event.stopPropagation()">Редактировать</button>
             <button (click)="deleteProductGroup(group.groupId); $event.stopPropagation()">Удалить</button>
           </div>
+        }
         <mat-card-header>
           <div mat-card-avatar class="product-group-avatar">
             {{ group.groupName.charAt(0) }}
