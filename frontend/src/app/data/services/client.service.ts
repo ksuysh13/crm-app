@@ -19,7 +19,7 @@ export class ClientService {
   http: HttpClient = inject(HttpClient);
 
   getAllClients(): Observable<Client[]> {
-    return this.http.get<Client[]>(`${this.apiUrl}`)
+    return this.http.get<Client[]>(`${this.apiUrl}`);
   }
 
   getClientById(id: number): Observable<Client> {

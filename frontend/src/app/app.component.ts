@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title = 'frontend';
 
-  constructor(private router: Router) {}
+  constructor(public router: Router) {}
 
   isActive(path: string): boolean {
     return this.router.url.includes(path);

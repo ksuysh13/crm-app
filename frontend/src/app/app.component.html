@@ -1,4 +1,5 @@
-<div class="header">
+@if (router.url != "/login" ) {
+  <div class="header">
     <h1>Автоматизированная информационная система учета клиентов</h1>
     <p>Магазин мебели "Уютный дом"</p>
   </div>
@@ -10,6 +11,6 @@
     <button class="tab-button" [class.active]="isActive('/manufacturers')" routerLink="/manufacturers">Производители</button>
     <!-- <button class="tab-button" [class.active]="isActive('/orders')" routerLink="/orders">Заказы</button> -->
   </div>
-
+}
 
 <router-outlet></router-outlet>

@@ -13,6 +13,7 @@ import { OrderListComponent } from './order-list/order-list.component';
 import { EditOrderComponent } from './edit-order/edit-order.component';
 import { OrderItemListComponent } from './order-item-list/order-item-list.component';
 import { EditOrderItemComponent } from './edit-order-item/edit-order-item.component';
+import { AuthComponent } from './auth/auth.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/clients', pathMatch: 'full' },
@@ -36,5 +37,6 @@ export const routes: Routes = [
     { path: 'product-groups/:groupId', component: EditProductGroupComponent },
     { path: 'product-groups/:groupId/products', component: ProductListComponent },
     { path: 'product-groups/:groupId/products/new', component: EditProductComponent },
-    { path: 'product-groups/:groupId/products/:productId', component: EditProductComponent }
+    { path: 'product-groups/:groupId/products/:productId', component: EditProductComponent },
+    { path: 'login', component: AuthComponent }
 ];
