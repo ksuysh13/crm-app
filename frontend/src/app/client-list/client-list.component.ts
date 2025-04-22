@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ClientService } from '../data/services/client.service';
 import { Client } from '../data/models/Client';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 // import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dialog.component';
 import { PhonePipe } from './pipes/phone.pipe'; 
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-client-list',
@@ -27,6 +28,8 @@ import { Router, RouterModule } from '@angular/router';
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];
   selectedClientId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private clientService: ClientService,

@@ -19,6 +19,12 @@ export class AuthService {
 
   cookieService = inject(CookieService);
 
+  userName = this.cookieService.get("login");
+
+  password = this.cookieService.get("password");
+
+  role = this.cookieService.get("role");
+
   login(login: string, password: string) {
     let httpOptions = {
         headers: new HttpHeaders({
@@ -43,5 +49,9 @@ export class AuthService {
 
   forgetMe() {
     this.cookieService.deleteAll();
+  }
+
+  isAuth() {
+    return (this.userName && this.password && this.role);
   }
 }
