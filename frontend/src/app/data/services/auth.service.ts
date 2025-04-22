@@ -25,33 +25,38 @@ export class AuthService {
 
   role = this.cookieService.get("role");
 
-  login(login: string, password: string) {
-    let httpOptions = {
-        headers: new HttpHeaders({
-            'Authorization': 'Basic ' + btoa(`${login}:${password}`)
-        })
+
+    login(login: string, password: string) {
+        let httpOptions = {
+            headers: new HttpHeaders({
+                'Authorization': 'Basic ' + btoa(`${login}:${password}`)
+            })
+        }
+        return this.http.get<{role: string}>(`${this.apiUrl}/login`, httpOptions);
     }
-    return this.http.get<string>(`${this.apiUrl}/login`, httpOptions);
-  }
 
-  saveLoginPassword(login: string, password: string, role: string) {
-    this.cookieService.set("login", login);
-    this.cookieService.set("password", password);
-    this.cookieService.set("role", role);
-  }
+    saveLoginPassword(login: string, password: string, role: string) {
+        this.cookieService.set("login", login);
+        this.cookieService.set("password", password);
+        this.cookieService.set("role", role);
+        // Обновите текущие значения
+        this.userName = login;
+        this.password = password;
+        this.role = role;
+    }
 
-  getUserInfo() {
-    let login = this.cookieService.get("login");
-    let password = this.cookieService.get("password");
-    let role = this.cookieService.get("role");
-    return [login, password, role]
-  }
+    getUserInfo() {
+        let login = this.cookieService.get("login");
+        let password = this.cookieService.get("password");
+        let role = this.cookieService.get("role");
+        return [login, password, role]
+    }
 
-  forgetMe() {
-    this.cookieService.deleteAll();
-  }
+    forgetMe() {
+        this.cookieService.deleteAll();
+    }
 
-  isAuth() {
-    return (this.userName && this.password && this.role);
-  }
+    isAuth() {
+        return (this.userName && this.password && this.role);
+    }
 }

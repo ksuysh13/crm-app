@@ -65,19 +65,35 @@ public class SecurityConfig {
     }
 
 
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    //     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+    //     for (int i = 0; i < logins.length; i++) {
+    //         String login = logins[i];
+    //         String password = passwords[i];
+    //         String role = roles[i % roles.length]; 
+    //         UserDetails user = User.withUsername(login)
+    //             .password(passwordEncoder().encode(password)) 
+    //             .roles(role)
+    //             .build();
+    //         manager.createUser(user);
+    //     }
+    //     return manager;
+    // }
+
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        for (int i = 0; i < logins.length; i++) {
-            String login = logins[i];
-            String password = passwords[i];
-            String role = roles[i % roles.length]; 
-            UserDetails user = User.withUsername(login)
-                .password(passwordEncoder().encode(password)) 
-                .roles(role)
-                .build();
-            manager.createUser(user);
-        }
+        UserDetails user = User.withUsername("user")
+            .password(passwordEncoder().encode("user"))
+            .roles("USER")
+            .build();
+        UserDetails admin = User.withUsername("admin")
+            .password(passwordEncoder().encode("admin"))
+            .roles("ADMIN")
+            .build();
+        manager.createUser(user);
+        manager.createUser(admin);
         return manager;
     }
 }

@@ -1,6 +1,8 @@
 package com.example.lab_project.controller;
 
 import java.security.Principal;
+import java.util.Collections;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @GetMapping("/login")
-    public String auth( Principal principal) {
+    public Map<String, String> auth(Principal principal) {
         System.out.println(principal.getName());
-        return "1";
+        return Collections.singletonMap("role", 
+            principal.getName().equals("admin") ? "ADMIN" : "USER");
     }
 }
