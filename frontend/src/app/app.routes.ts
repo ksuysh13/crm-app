@@ -16,7 +16,7 @@ import { EditOrderItemComponent } from './edit-order-item/edit-order-item.compon
 import { AuthComponent } from './auth/auth.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/clients', pathMatch: 'full' },
+    { path: '', redirectTo: '/login', pathMatch: 'full' },
     {path: 'clients', component: ClientListComponent},
     { path: 'clients/new', component: EditClientComponent },
     { path: 'clients/:clientId', component: EditClientComponent },
