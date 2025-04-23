@@ -84,26 +84,4 @@ export class ClientListComponent implements OnInit {
       this.router.navigate(['/clients', clientId, 'orders']);
     }
   }
-
-  // editClient(client: Client): void {
-  //   const dialogRef = this.dialog.open(ClientEditDialogComponent, {
-  //     width: '500px',
-  //     data: { ...client }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.loadClients();
-  //     }
-  //   });
-  // }
-
-  // deleteClient(id: number): void {
-  //   if (confirm('Вы уверены, что хотите удалить этого клиента?')) {
-  //     this.clientService.deleteClient(id).subscribe({
-  //       next: () => this.loadClients(),
-  //       error: (err) => console.error('Error deleting client', err)
-  //     });
-  //   }
-  // }
 }

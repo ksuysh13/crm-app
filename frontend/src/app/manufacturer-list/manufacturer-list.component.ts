@@ -1,4 +1,3 @@
-// manufacturer-list.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { ManufacturerService } from '../data/services/manufacturer.service';
 import { Manufacturer } from '../data/models/Manufacturer';

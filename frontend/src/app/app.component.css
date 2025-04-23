@@ -27,3 +27,7 @@
   .tabs button.active {
     background-color: #7b79dc;
   }
+
+  .logout-button:hover {
+    background-color: #f44336 !important;
+  }

@@ -21,22 +21,6 @@ export class AuthComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(1)])
   })
 
-  // login() {
-  //   if (this.form.valid) {
-  //     this.authService.login(this.form.value.login!, this.form.value.password!).subscribe({
-  //       next: (role) => {
-  //         console.log('Role received from server:', role);
-  //         this.authService.saveLoginPassword(this.form.value.login!, this.form.value.password!, role);
-  //         this.toClients();
-  //       },
-  //       error: (err) => {
-  //         console.error('Auth error:', err);
-  //         alert("Неверные данные: логин или пароль");
-  //       }
-  //     });
-  //   }
-  // }
-
   login() {
     if (this.form.valid) {
       this.authService.login(this.form.value.login!, this.form.value.password!).subscribe({

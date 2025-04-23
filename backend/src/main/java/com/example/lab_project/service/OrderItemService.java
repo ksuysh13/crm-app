@@ -59,7 +59,6 @@ public class OrderItemService {
         return orderItemRepository.findByOrder_OrderIdAndProduct_ProductId(orderId, productId);
     }
 
-    //Сохраняет заказ в базе данных.
     public OrderItem save(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
@@ -67,93 +66,6 @@ public class OrderItemService {
     public void deleteById(Long orderItemId) {
         orderItemRepository.deleteById(orderItemId);
     }
-
-    // @Transactional
-    // public OrderItemDTO create(OrderItemDTO orderItemDTO) {
-    //     Order order = orderRepository.findById(orderItemDTO.getOrderId())
-    //             .orElseThrow(() -> new RuntimeException("Order not found"));
-    //     Product product = productRepository.findById(orderItemDTO.getProductId())
-    //             .orElseThrow(() -> new RuntimeException("Product not found"));
-
-    //     OrderItem orderItem = orderItemMapper.toEntity(orderItemDTO);
-    //     orderItem.setOrder(order);
-    //     orderItem.setProduct(product);
-
-    //     if (orderItemDTO.getDiscountId() != null) {
-    //         Discount discount = discountRepository.findById(orderItemDTO.getDiscountId())
-    //                 .orElseThrow(() -> new RuntimeException("Discount not found"));
-    //         orderItem.setDiscount(discount);
-    //         orderItem.setPrice(calculateDiscountedPrice(product.getPrice(), discount));
-    //     } else {
-    //         orderItem.setPrice(product.getPrice());
-    //     }
-
-    //     OrderItem savedItem = orderItemRepository.save(orderItem);
-    //     return orderItemMapper.toDTO(savedItem);
-    // }
-
-    // // @Transactional
-    // // public Optional<OrderItemDTO> update(Long id, OrderItemDTO orderItemDTO) {
-    // //     return orderItemRepository.findById(id).map(existingItem -> {
-    // //         existingItem.setQuantity(orderItemDTO.getQuantity());
-
-    // //         if (orderItemDTO.getDiscountId() != null) {
-    // //             Discount discount = discountRepository.findById(orderItemDTO.getDiscountId())
-    // //                     .orElseThrow(() -> new RuntimeException("Discount not found"));
-    // //             existingItem.setDiscount(discount);
-    // //             existingItem.setPrice(calculateDiscountedPrice(
-    // //                 existingItem.getProduct().getPrice(), discount));
-    // //         } else {
-    // //             existingItem.setDiscount(null);
-    // //             existingItem.setPrice(existingItem.getProduct().getPrice());
-    // //         }
-
-    // //         OrderItem updatedItem = orderItemRepository.save(existingItem);
-    // //         return orderItemMapper.toDTO(updatedItem);
-    // //     });
-    // // }
-
-    // @Transactional
-    // public Optional<OrderItemDTO> update(Long id, OrderItemDTO orderItemDTO) {
-    //     return orderItemRepository.findById(id)
-    //         .map(existingItem -> {
-    //         // Обновляем количество
-    //         existingItem.setQuantity(orderItemDTO.getQuantity());
-            
-    //         // Загружаем продукт отдельным запросом
-    //         Product product = productRepository.findById(existingItem.getProduct().getProductId())
-    //             .orElseThrow(() -> new RuntimeException("Product not found"));
-            
-    //         // Обрабатываем скидку
-    //         if (orderItemDTO.getDiscountId() != null) {
-    //             Discount discount = discountRepository.findById(orderItemDTO.getDiscountId())
-    //                 .orElseThrow(() -> new RuntimeException("Discount not found"));
-    //             existingItem.setDiscount(discount);
-    //             existingItem.setPrice(calculateDiscountedPrice(product.getPrice(), discount));
-    //         } else {
-    //             existingItem.setDiscount(null); // Явно устанавливаем null
-    //             existingItem.setPrice(product.getPrice());
-    //         }
-            
-    //         OrderItem updatedItem = orderItemRepository.save(existingItem);
-    //         return orderItemMapper.toDTO(updatedItem);
-    //     });
-    // }
-
-    // @Transactional
-    // public boolean delete(Long id) {
-    //     if (orderItemRepository.existsById(id)) {
-    //         orderItemRepository.deleteById(id);
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // private BigDecimal calculateDiscountedPrice(BigDecimal originalPrice, Discount discount) {
-    //     return originalPrice.subtract(
-    //         originalPrice.multiply(
-    //             discount.getDiscountPercentage().divide(BigDecimal.valueOf(100))));
-    // }
 
     @Transactional
     public OrderItemDTO create(OrderItemDTO orderItemDTO) {

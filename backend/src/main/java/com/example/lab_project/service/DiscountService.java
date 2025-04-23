@@ -39,7 +39,7 @@ public class DiscountService {
             orderItemService.save(item);
         }
         
-        // Теперь можно безопасно удалить скидку
+        // удалить скидку
         discountRepository.deleteById(discountId);
     }
 

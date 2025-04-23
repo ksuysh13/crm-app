@@ -1,4 +1,3 @@
-// product-group-list.component.ts
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductGroupService } from '../data/services/product-group.service';
 import { ProductGroup } from '../data/models/ProductGroup';

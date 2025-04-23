@@ -1,4 +1,3 @@
-// manufacturer.service.ts
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../enviroment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

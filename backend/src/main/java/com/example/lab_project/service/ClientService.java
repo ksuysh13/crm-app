@@ -45,17 +45,4 @@ public class ClientService {
     public List<Order> getCompletedOrdersByClient(Long clientId) {
         return orderRepository.findCompletedOrdersByClient(clientId);
     }
-
-    // public Client updateClient(Long id, Client updatedClient) {
-    //     return clientRepository.findById(id)
-    //             .map(client -> {
-    //                 client.setFirstName(updatedClient.getFirstName());
-    //                 client.setLastName(updatedClient.getLastName());
-    //                 client.setEmail(updatedClient.getEmail());
-    //                 client.setPhone(updatedClient.getPhone());
-    //                 client.setAddress(updatedClient.getAddress());
-    //                 return clientRepository.save(client);
-    //             })
-    //             .orElseThrow(() -> new RuntimeException("Клиент не найден"));
-    // }
 }

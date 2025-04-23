@@ -10,6 +10,7 @@
     <button class="tab-button" [class.active]="isActive('/discounts')" routerLink="/discounts">Скидки</button>
     <button class="tab-button" [class.active]="isActive('/manufacturers')" routerLink="/manufacturers">Производители</button>
     <!-- <button class="tab-button" [class.active]="isActive('/orders')" routerLink="/orders">Заказы</button> -->
+    <button class="tab-button logout-button" (click)="logout()" style="float: right;">Выход</button>
   </div>
 }
 

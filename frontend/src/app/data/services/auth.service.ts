@@ -39,7 +39,7 @@ export class AuthService {
         this.cookieService.set("login", login);
         this.cookieService.set("password", password);
         this.cookieService.set("role", role);
-        // Обновите текущие значения
+        // Обновляем текущие значения
         this.userName = login;
         this.password = password;
         this.role = role;

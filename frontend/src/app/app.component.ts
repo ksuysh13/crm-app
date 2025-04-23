@@ -17,4 +17,8 @@ export class AppComponent {
   isActive(path: string): boolean {
     return this.router.url.includes(path);
   }
+
+  logout(): void {
+    this.router.navigate(['/login']);
+  }
 }
