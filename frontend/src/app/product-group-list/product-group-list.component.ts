@@ -62,7 +62,7 @@ export class ProductGroupListComponent implements OnInit {
 
   deleteProductGroup(groupId: number | undefined): void {
     if (groupId !== undefined) {
-      if (confirm('Вы уверены, что хотите удалить эту группу продуктов?')) {
+      if (confirm('Вы уверены, что хотите удалить эту группу товаров?')) {
         this.productGroupService.deleteProductGroup(groupId).subscribe({
           next: () => {
             this.loadProductGroups();

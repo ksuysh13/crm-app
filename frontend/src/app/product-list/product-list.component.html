@@ -1,5 +1,5 @@
 <div class="product-container">
-    <h1 class="title">Список продуктов</h1>
+    <h1 class="title">Список товаров</h1>
 
     @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-product-btn" (click)="onCreateProduct()">+ Добавить продукт</button>

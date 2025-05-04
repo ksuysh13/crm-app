@@ -1,12 +1,12 @@
 <div class="product-group-container">
-    <h1 class="title">Список групп продуктов</h1>
+    <h1 class="title">Список групп товаров</h1>
 
     @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-product-group-btn" (click)="onCreateProductGroup()">+ Добавить группу</button>
     }
     <div *ngIf="productGroups.length === 0" class="empty-state">
       <mat-icon>category</mat-icon>
-      <p>Группы продуктов не найдены</p>
+      <p>Группы товаров не найдены</p>
     </div>
   
     <div class="product-group-cards">
