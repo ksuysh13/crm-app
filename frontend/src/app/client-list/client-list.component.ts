@@ -13,6 +13,7 @@ import { OrderService } from '../data/services/order.service';
 import { forkJoin } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-client-list',
@@ -25,21 +26,33 @@ import { FormsModule } from '@angular/forms';
     PhonePipe,
     RouterModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    DatePipe
   ],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];
+  filteredClients: Client[] = [];
   selectedClientId: number | null = null;
-  clientOrdersInfo: Record<number, {count: number, total: number}> = {};
+  clientOrdersInfo: Record<number, {count: number, total: number, recentCount: number}> = {};
+  
   sortOptions = [
     { value: 'alphabet', label: 'По алфавиту' },
     { value: 'ordersCount', label: 'По количеству заказов' },
-    { value: 'totalAmount', label: 'По сумме заказов' }
+    { value: 'totalAmount', label: 'По сумме заказов' },
+    { value: 'recentOrders', label: 'По заказам за выбранный период' }
   ];
   selectedSort = 'alphabet';
+  
+  periodOptions = [
+    { value: 'week', label: 'За неделю' },
+    { value: 'month', label: 'За месяц' },
+    { value: 'year', label: 'За год' },
+    { value: 'all', label: 'За все время' }
+  ];
+  selectedPeriod = 'all';
 
   authService = inject(AuthService);
 
@@ -58,6 +71,7 @@ export class ClientListComponent implements OnInit {
     this.clientService.getAllClients().subscribe({
       next: (clients) => {
         this.clients = clients;
+        this.filteredClients = [...clients];
         this.loadOrdersInfo(clients);
       },
       error: (err) => console.error('Error loading clients', err)
@@ -71,43 +85,84 @@ export class ClientListComponent implements OnInit {
 
     forkJoin(requests).subscribe({
       next: (ordersArrays) => {
+        const now = new Date();
         ordersArrays.forEach((orders, index) => {
           const clientId = clients[index].clientId!;
+          
+          // Фильтрация заказов по периоду
+          const recentOrders = orders.filter(order => {
+            const orderDate = new Date(order.orderDate);
+            switch(this.selectedPeriod) {
+              case 'week':
+                return this.getDaysDiff(now, orderDate) <= 7;
+              case 'month':
+                return this.getDaysDiff(now, orderDate) <= 30;
+              case 'year':
+                return this.getDaysDiff(now, orderDate) <= 365;
+              default:
+                return true;
+            }
+          });
+
           this.clientOrdersInfo[clientId] = {
             count: orders.length,
-            total: orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0)
+            total: orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0),
+            recentCount: recentOrders.length
           };
         });
-        this.sortClients();
+        this.sortAndFilterClients();
       },
       error: (err) => console.error('Error loading orders info', err)
     });
   }
 
-  sortClients(): void {
+  getDaysDiff(date1: Date, date2: Date): number {
+    const diffTime = Math.abs(date1.getTime() - date2.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  }
+
+  sortAndFilterClients(): void {
+    // Сначала сортировка
     switch (this.selectedSort) {
       case 'alphabet':
-        this.clients.sort((a, b) => 
+        this.filteredClients.sort((a, b) => 
           `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
         );
         break;
       case 'ordersCount':
-        this.clients.sort((a, b) => 
+        this.filteredClients.sort((a, b) => 
           (this.clientOrdersInfo[b.clientId!]?.count || 0) - 
           (this.clientOrdersInfo[a.clientId!]?.count || 0)
         );
         break;
       case 'totalAmount':
-        this.clients.sort((a, b) => 
+        this.filteredClients.sort((a, b) => 
           (this.clientOrdersInfo[b.clientId!]?.total || 0) - 
           (this.clientOrdersInfo[a.clientId!]?.total || 0)
         );
         break;
+      case 'recentOrders':
+        this.filteredClients.sort((a, b) => 
+          (this.clientOrdersInfo[b.clientId!]?.recentCount || 0) - 
+          (this.clientOrdersInfo[a.clientId!]?.recentCount || 0)
+        );
+        break;
+    }
+
+    // Затем фильтрация по периоду, если выбрана сортировка по активным заказам
+    if (this.selectedSort === 'recentOrders') {
+      this.filteredClients = this.filteredClients.filter(client => 
+        this.clientOrdersInfo[client.clientId!]?.recentCount > 0
+      );
     }
   }
 
+  onPeriodChange(): void {
+    this.loadOrdersInfo(this.clients);
+  }
+
   onSortChange(): void {
-    this.sortClients();
+    this.sortAndFilterClients();
   }
 
   // Остальные методы остаются без изменений
