@@ -6,10 +6,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-// import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dialog.component';
-import { PhonePipe } from './pipes/phone.pipe'; 
+import { PhonePipe } from './pipes/phone.pipe';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../data/services/auth.service';
+import { OrderService } from '../data/services/order.service';
+import { forkJoin } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-client-list',
@@ -20,7 +23,9 @@ import { AuthService } from '../data/services/auth.service';
     MatButtonModule,
     MatIconModule,
     PhonePipe,
-    RouterModule
+    RouterModule,
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.css']
@@ -28,11 +33,19 @@ import { AuthService } from '../data/services/auth.service';
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];
   selectedClientId: number | null = null;
+  clientOrdersInfo: Record<number, {count: number, total: number}> = {};
+  sortOptions = [
+    { value: 'alphabet', label: 'По алфавиту' },
+    { value: 'ordersCount', label: 'По количеству заказов' },
+    { value: 'totalAmount', label: 'По сумме заказов' }
+  ];
+  selectedSort = 'alphabet';
 
   authService = inject(AuthService);
 
   constructor(
     private clientService: ClientService,
+    private orderService: OrderService,
     private dialog: MatDialog,
     private router: Router
   ) { }
@@ -43,11 +56,61 @@ export class ClientListComponent implements OnInit {
 
   loadClients(): void {
     this.clientService.getAllClients().subscribe({
-      next: (data) => this.clients = data,
+      next: (clients) => {
+        this.clients = clients;
+        this.loadOrdersInfo(clients);
+      },
       error: (err) => console.error('Error loading clients', err)
     });
   }
 
+  loadOrdersInfo(clients: Client[]): void {
+    const requests = clients.map(client => 
+      this.orderService.getOrdersByClientId(client.clientId!)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (ordersArrays) => {
+        ordersArrays.forEach((orders, index) => {
+          const clientId = clients[index].clientId!;
+          this.clientOrdersInfo[clientId] = {
+            count: orders.length,
+            total: orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0)
+          };
+        });
+        this.sortClients();
+      },
+      error: (err) => console.error('Error loading orders info', err)
+    });
+  }
+
+  sortClients(): void {
+    switch (this.selectedSort) {
+      case 'alphabet':
+        this.clients.sort((a, b) => 
+          `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
+        );
+        break;
+      case 'ordersCount':
+        this.clients.sort((a, b) => 
+          (this.clientOrdersInfo[b.clientId!]?.count || 0) - 
+          (this.clientOrdersInfo[a.clientId!]?.count || 0)
+        );
+        break;
+      case 'totalAmount':
+        this.clients.sort((a, b) => 
+          (this.clientOrdersInfo[b.clientId!]?.total || 0) - 
+          (this.clientOrdersInfo[a.clientId!]?.total || 0)
+        );
+        break;
+    }
+  }
+
+  onSortChange(): void {
+    this.sortClients();
+  }
+
+  // Остальные методы остаются без изменений
   onCreateClient(): void {
     this.router.navigate(['/clients/new']); 
   }
@@ -61,7 +124,7 @@ export class ClientListComponent implements OnInit {
   editClient(clientId: number | undefined): void {
     if (clientId !== undefined) {
       this.router.navigate(['/clients', clientId]);
-      this.selectedClientId = null; // Закрываем меню при переходе на редактирование
+      this.selectedClientId = null;
     }
   }
   

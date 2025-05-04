@@ -180,3 +180,35 @@
 .show {
   display: block;
 }
+
+.sort-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+mat-form-field {
+  width: 250px;
+}
+
+mat-select {
+  font-size: 14px;
+}
+
+.add-client-btn {
+  background-color: #7b79dc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.add-client-btn:hover {
+  background-color: #6a68c5;
+}
+

@@ -1,9 +1,20 @@
 <div class="client-container">
   <h1 class="title">Список клиентов</h1>
 
-  @if (authService.isAuth() && authService.role === 'ADMIN') {
-    <button class="add-client-btn" (click)="onCreateClient()">+ Добавить клиента</button>
-}
+  <div class="sort-controls">
+    <mat-form-field>
+      <mat-label>Сортировка</mat-label>
+      <mat-select [(ngModel)]="selectedSort" (ngModelChange)="onSortChange()">
+        <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
+      <button class="add-client-btn" (click)="onCreateClient()">+ Добавить клиента</button>
+    }
+  </div>
   
   <div *ngIf="clients.length === 0" class="empty-state">
     <mat-icon>group</mat-icon>
@@ -15,8 +26,8 @@
       
       @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(client.clientId); $event.stopPropagation()">
-        <mat-icon>more_vert</mat-icon>
-      </button>
+          <mat-icon>more_vert</mat-icon>
+        </button>
         <div class="menu-content" [class.show]="selectedClientId === client.clientId">
           <button (click)="editClient(client.clientId); $event.stopPropagation()">Редактировать</button>
           <button (click)="deleteClient(client.clientId); $event.stopPropagation()">Удалить</button>
@@ -25,7 +36,7 @@
       
       <mat-card-header>
         <div mat-card-avatar class="client-avatar">
-          {{ client.firstName.charAt(0) }}{{ client.lastName.charAt(0) }}
+          {{ client.firstName?.charAt(0) }}{{ client.lastName?.charAt(0) }}
         </div>
         <mat-card-title>{{ client.lastName }} {{ client.firstName }}</mat-card-title>
         <mat-card-subtitle>ID: {{ client.clientId }}</mat-card-subtitle>
@@ -44,6 +55,14 @@
           <div class="info-row">
             <mat-icon>home</mat-icon>
             <span>{{ client.address }}</span>
+          </div>
+          <div class="info-row">
+            <mat-icon>receipt</mat-icon>
+            <span>Заказов: {{ client.clientId ? (clientOrdersInfo[client.clientId]?.count || 0) : 0 }}</span>
+          </div>
+          <div class="info-row">
+            <mat-icon>attach_money</mat-icon>
+            <span>Общая сумма: {{ client.clientId ? ((clientOrdersInfo[client.clientId]?.total || 0) | currency:'RUB':'symbol':'1.2-2') : (0 | currency:'RUB':'symbol':'1.2-2') }}</span>
           </div>
         </div>
       </mat-card-content>
