@@ -1,9 +1,9 @@
-<!-- product-list.component.html -->
 <div class="product-container">
-    <h1 class="title">Список продуктов</h1>
+    <h1 class="title">Список товаров</h1>
 
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-product-btn" (click)="onCreateProduct()">+ Добавить продукт</button>
-    
+    }
     <div *ngIf="products.length === 0" class="empty-state">
       <mat-icon>shopping_basket</mat-icon>
       <p>Продукты не найдены</p>
@@ -11,6 +11,7 @@
   
     <div class="product-cards">
       <mat-card *ngFor="let product of products" class="product-card">
+        @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(product.productId); $event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -18,6 +19,7 @@
             <button (click)="editProduct(product.productId); $event.stopPropagation()">Редактировать</button>
             <button (click)="deleteProduct(product.productId); $event.stopPropagation()">Удалить</button>
           </div>
+        }
         <mat-card-header>
           <div mat-card-avatar class="product-avatar">
             {{ product.productName.charAt(0) }}

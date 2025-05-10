@@ -1,0 +1,9 @@
+<div class="auth">
+    <form [formGroup]="form" class="auth-container" (ngSubmit)="login()">
+    <h2>Вход в систему</h2>
+    <input formControlName="login" type="text" class="auth-input" placeholder="Логин" required>
+    <input formControlName="password" type="password" class="auth-input" placeholder="Пароль" required>
+    <button type="submit" class="auth-button">Войти</button>
+    <!-- <button type="button" class="auth-button" (click)="toClients()">На главную</button> -->
+    </form>
+</div>

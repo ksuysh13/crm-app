@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderItemService } from '../data/services/order-item.service';
 import { OrderItem } from '../data/models/OrderItem';
@@ -12,6 +12,7 @@ import { OrderService } from '../data/services/order.service';
 import { Order } from '../data/models/Order';
 import { ProductService } from '../data/services/product.service';
 import { DiscountService } from '../data/services/discount.service';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-order-item-list',
@@ -28,11 +29,13 @@ import { DiscountService } from '../data/services/discount.service';
 })
 export class OrderItemListComponent implements OnInit {
   orderItems: OrderItem[] = [];
-  displayedColumns: string[] = ['product', 'quantity', 'price', 'discount', 'total', 'actions'];
+  displayedColumns: string[] = ['product', 'quantity', 'price', 'discount', 'total'];
   clientId!: number;
   orderId!: number;
   order!: Order | null;
   isOrderCompleted: boolean = false;
+
+  authService = inject(AuthService);
 
   constructor(
     private route: ActivatedRoute,
@@ -51,8 +54,12 @@ export class OrderItemListComponent implements OnInit {
       
       if (isNaN(this.clientId) || isNaN(this.orderId)) {
         console.error('Invalid clientId or orderId');
-        this.router.navigate(['/']); // Redirect to home or error page
+        this.router.navigate(['/']);
         return;
+      }
+
+      if (this.authService.isAuth() && this.authService.role === 'ADMIN') {
+        this.displayedColumns.push('actions');
       }
 
       this.loadOrder();

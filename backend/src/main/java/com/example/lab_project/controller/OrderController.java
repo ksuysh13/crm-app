@@ -54,18 +54,6 @@ public class OrderController {
         return orderMapper.toDTO(savedOrder);
     }
 
-    // @PutMapping("/{orderId}")
-    // public ResponseEntity<OrderDTO> update(@PathVariable Long clientId, @PathVariable Long orderId, @RequestBody OrderDTO orderDTO) {
-    //     if (orderService.findByOrderIdAndClientId(orderId, clientId).isEmpty()) {
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    //     }
-    //     orderDTO.setOrderId(orderId);
-    //     orderDTO.setClientId(clientId);
-    //     Order order = orderMapper.toEntity(orderDTO);
-    //     Order updatedOrder = orderService.save(order);
-    //     return ResponseEntity.ok(orderMapper.toDTO(updatedOrder));
-    // }
-
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> update(
             @PathVariable Long clientId,

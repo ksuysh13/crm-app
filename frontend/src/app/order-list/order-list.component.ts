@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../data/services/order.service';
 import { Order } from '../data/models/Order';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-order-list',
@@ -26,6 +27,8 @@ export class OrderListComponent implements OnInit {
   orders: Order[] = [];
   clientId!: number;
   selectedOrderId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private route: ActivatedRoute,

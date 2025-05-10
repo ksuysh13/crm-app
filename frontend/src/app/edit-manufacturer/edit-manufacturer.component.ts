@@ -1,4 +1,3 @@
-// edit-manufacturer.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManufacturerService } from '../data/services/manufacturer.service';

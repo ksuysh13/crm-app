@@ -1,8 +1,9 @@
 <div class="order-container">
     <h1 class="title">Заказы клиента</h1>
   
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-order-btn" (click)="onCreateOrder()">+ Добавить заказ</button>
-    
+    }
     <div *ngIf="orders.length === 0" class="empty-state">
       <mat-icon>receipt</mat-icon>
       <p>Заказы не найдены</p>
@@ -10,6 +11,7 @@
   
     <div class="order-cards">
       <mat-card *ngFor="let order of orders" class="order-card" (click)="viewOrderItems(order.orderId)">
+        @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(order.orderId); $event.stopPropagation()">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -18,7 +20,7 @@
           <button (click)="deleteOrder(order.orderId); $event.stopPropagation()">Удалить</button>
           <button (click)="recalculateOrder(order.orderId!); $event.stopPropagation()">Пересчитать</button>
         </div>
-        
+      }
         <mat-card-header>
           <mat-card-title>Заказ #{{ order.orderId }}</mat-card-title>
           <mat-card-subtitle>Дата: {{ order.orderDate | date:'dd.MM.yyyy' }}</mat-card-subtitle>

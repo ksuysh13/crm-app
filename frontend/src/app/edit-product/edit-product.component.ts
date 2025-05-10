@@ -89,7 +89,6 @@ export class EditProductComponent implements OnInit {
       error: (err) => {
         console.error('Error loading product:', err);
         this.isLoading = false;
-        // Можно добавить обработку ошибки, например, редирект
         this.router.navigate(['/product-groups', this.groupId, 'products']);
       }
     });

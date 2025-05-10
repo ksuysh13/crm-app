@@ -1,5 +1,4 @@
-// manufacturer-list.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ManufacturerService } from '../data/services/manufacturer.service';
 import { Manufacturer } from '../data/models/Manufacturer';
 import { CommonModule } from '@angular/common';
@@ -7,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../data/services/auth.service';
 
 @Component({
   selector: 'app-manufacturer-list',
@@ -25,6 +25,8 @@ export class ManufacturerListComponent implements OnInit {
   manufacturers: Manufacturer[] = [];
   searchTerm: string = '';
   selectedManufacturerId: number | null = null;
+
+  authService = inject(AuthService);
 
   constructor(
     private manufacturerService: ManufacturerService,

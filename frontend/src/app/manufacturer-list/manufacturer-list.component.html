@@ -1,4 +1,3 @@
-<!-- manufacturer-list.component.html -->
 <div class="manufacturer-container">
     <h1 class="title">Список производителей</h1>
 
@@ -7,8 +6,9 @@
         <button (click)="onSearch()">Поиск</button>
     </div> -->
 
+    @if (authService.isAuth() && authService.role === 'ADMIN') {
     <button class="add-manufacturer-btn" (click)="onCreateManufacturer()">+ Добавить производителя</button>
-    
+    }
     <div *ngIf="manufacturers.length === 0" class="empty-state">
       <mat-icon>factory</mat-icon>
       <p>Производители не найдены</p>
@@ -16,6 +16,7 @@
   
     <div class="manufacturer-cards">
       <mat-card *ngFor="let manufacturer of manufacturers" class="manufacturer-card">
+        @if (authService.isAuth() && authService.role === 'ADMIN') {
         <button class="menu-button" (click)="toggleMenu(manufacturer.manufacturerId); $event.stopPropagation()">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -23,6 +24,7 @@
             <button (click)="editManufacturer(manufacturer.manufacturerId); $event.stopPropagation()">Редактировать</button>
             <button (click)="deleteManufacturer(manufacturer.manufacturerId); $event.stopPropagation()">Удалить</button>
           </div>
+        }
         <mat-card-header>
           <div mat-card-avatar class="manufacturer-avatar">
             {{ manufacturer.manufacturerName.charAt(0) }}
